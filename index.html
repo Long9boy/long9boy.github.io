@@ -39,16 +39,23 @@
     @keyframes typing { from { width: 0 } to { width: 100% } }
     @keyframes blink { 50% { border-color: transparent } }
 
-    /* DOCK EFFECT */
+    /* DOCK EFFECT STYLE */
     .links { display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
     .links a {
       display: flex; align-items: center; justify-content: center;
       margin: 0 auto; color: #00ffcc; text-decoration: none;
       border: 1px solid #00ffcc; padding: 12px 25px; min-width: 220px;
       border-radius: 8px; background: rgba(0, 0, 0, 0.6);
-      transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      transition: all 0.3s ease; /* Mượt mà khi co giãn */
     }
-    .links a.hover-large { transform: scale(1.2); background: #00ffcc; color: black; box-shadow: 0 0 20px #00ffcc; }
+    /* Khi được focus (to lên) */
+    .links a.hover-large { 
+      transform: scale(1.2) !important; 
+      background: #00ffcc; 
+      color: black; 
+      box-shadow: 0 0 20px #00ffcc; 
+      opacity: 1 !important;
+    }
 
     /* 3. PROJECTS SECTION */
     .projects-section {
@@ -84,10 +91,11 @@
       font-family: 'Times New Roman', Times, serif;
       line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3;
       -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;
+      white-space: pre-line;
     }
     .yt-title-line { font-weight: bold; display: block; color: #00ffcc; margin-bottom: 5px; }
 
-    /* 4. DIALOG / MODAL STYLE (CẬP NHẬT: KHÔNG NÚT X) */
+    /* 4. DIALOG / MODAL STYLE */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(12px);
@@ -98,15 +106,12 @@
       background: #111; width: 90%; max-width: 800px; border-radius: 20px;
       border: 1px solid #00ffcc; position: relative; padding: 40px;
       color: white; box-shadow: 0 0 50px rgba(0, 255, 204, 0.2);
-      cursor: default; /* Tránh nhầm lẫn click trong box là đóng */
+      cursor: default;
     }
     .modal-header-title { position: absolute; top: 20px; left: 20px; font-size: 1.2rem; color: #00ffcc; font-weight: bold; }
-    
     .modal-video-container { width: 100%; aspect-ratio: 16/9; margin: 25px 0 15px; background: #000; border-radius: 10px; overflow: hidden; border: 1px solid #222; }
     .modal-video-container iframe { width: 100%; height: 100%; border: none; }
-    
     .modal-description { font-family: 'Times New Roman', Times, serif; font-size: 1.1rem; line-height: 1.6; color: #eee; white-space: pre-line; }
-    
     .modal-btn-container { display: flex; justify-content: center; margin-top: 30px; }
     .modal-btn {
       padding: 12px 35px; background: #00ffcc; color: black;
@@ -122,13 +127,10 @@
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-content" onclick="event.stopPropagation()">
     <div class="modal-header-title" id="modalProjectTitle">Project Name</div>
-    
     <div id="modalVideoSection" class="modal-video-container"></div>
-
     <div class="modal-description" id="modalDescription"></div>
-
     <div class="modal-btn-container">
-      <a href="#" id="modalExternalLink" target="_blank" class="modal-btn">
+      <a href="https://huulong.com" target="_blank" class="modal-btn" id="modalExternalLink">
         OPEN LINK <i class="fa-solid fa-arrow-up-right-from-square"></i>
       </a>
     </div>
@@ -169,22 +171,21 @@
   // 1. DIALOG LOGIC
   const overlay = document.getElementById('modalOverlay');
 
-  function openModal(title, desc, link) {
+  function openModal(title, desc, youtubeLink) {
     const modalTitle = document.getElementById('modalProjectTitle');
     const modalDesc = document.getElementById('modalDescription');
-    const modalLink = document.getElementById('modalExternalLink');
     const videoSection = document.getElementById('modalVideoSection');
 
     modalTitle.innerText = title;
     modalDesc.innerText = desc;
-    modalLink.href = link;
 
-    if (link.includes('youtu')) {
+    // Xử lý nhúng Video Youtube vào Dialog
+    if (youtubeLink && youtubeLink.includes('youtu')) {
       let videoId = "";
-      if (link.includes('watch?v=')) {
-          videoId = link.split('v=')[1].split('&')[0];
+      if (youtubeLink.includes('watch?v=')) {
+          videoId = youtubeLink.split('v=')[1].split('&')[0];
       } else {
-          videoId = link.split('/').pop().split('?')[0];
+          videoId = youtubeLink.split('/').pop().split('?')[0];
       }
       videoSection.style.display = "block";
       videoSection.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>`;
@@ -202,10 +203,9 @@
     document.body.style.overflow = 'auto';
   }
 
-  // Đóng khi click vào overlay (vùng mờ bên ngoài)
   overlay.addEventListener('click', closeModal);
 
-  // 2. YOUTUBE DATA (GIỮ NGUYÊN)
+  // 2. YOUTUBE DATA AUTO-LOADER
   async function loadYouTubeData() {
     const items = document.querySelectorAll('.yt-auto-full');
     for (const item of items) {
@@ -226,16 +226,31 @@
     }
   }
 
-  // 3. DOCK EFFECT (GIỮ NGUYÊN)
+  // 3. FIX LỖI DOCK EFFECT
   const linkContainer = document.getElementById('link-container');
   const links = Array.from(linkContainer.querySelectorAll('a'));
+
   links.forEach((link, index) => {
     link.addEventListener('mouseenter', () => {
       links.forEach((l, i) => {
         const distance = Math.abs(i - index);
-        l.classList.remove('hover-large');
-        if (distance === 0) l.classList.add('hover-large');
+        if (distance === 0) {
+          l.classList.add('hover-large');
+        } else {
+          l.classList.remove('hover-large');
+          l.style.transform = "scale(0.85)";
+          l.style.opacity = "0.5";
+        }
       });
+    });
+  });
+
+  // Khi rời chuột ra khỏi vùng chứa toàn bộ nút
+  linkContainer.addEventListener('mouseleave', () => {
+    links.forEach((l) => {
+      l.classList.remove('hover-large');
+      l.style.transform = "scale(1)";
+      l.style.opacity = "1";
     });
   });
 
