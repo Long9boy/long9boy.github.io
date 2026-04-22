@@ -20,7 +20,7 @@
       overflow-x: hidden;
     }
 
-    /* 2. HERO SECTION (MÀN HÌNH ĐẦU) */
+    /* 2. HERO SECTION */
     .hero {
       position: relative;
       height: 100vh;
@@ -71,60 +71,70 @@
     .links a.hover-small { transform: scale(0.85); opacity: 0.4; }
     .links a i { margin-right: 12px; }
 
-    /* 3. PROJECTS SECTION (CUỘN DỌC) */
+    /* 3. PROJECTS SECTION (TRẢI DÀI THEO NỘI DUNG) */
     .projects-section {
-      height: 100vh;
+      min-height: 100vh; /* Tối thiểu là đầy màn hình, nhưng sẽ dài ra theo project */
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
       background: black;
-      padding: 20px;
+      padding: 80px 20px; /* Tạo khoảng trống trên dưới */
       box-sizing: border-box;
     }
 
-    /* Khung chứa danh sách dự án có thanh cuộn */
-    .projects-scroll-box {
+    /* Bảng dự án to hơn, không viền, hiệu ứng 3D */
+    .projects-list {
       width: 100%;
-      max-width: 600px; /* Độ rộng vùng cuộn */
-      max-height: 60vh;  /* Chiều cao vùng cuộn */
-      overflow-y: auto;  /* Cho phép cuộn dọc */
-      padding-right: 15px;
-      border: 1px solid rgba(0, 255, 204, 0.2);
-      border-radius: 12px;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.02);
-    }
-
-    /* Tùy chỉnh thanh cuộn dọc (Scrollbar) */
-    .projects-scroll-box::-webkit-scrollbar {
-      width: 6px;
-    }
-    .projects-scroll-box::-webkit-scrollbar-thumb {
-      background: #00ffcc;
-      border-radius: 10px;
-    }
-    .projects-scroll-box::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.05);
+      max-width: 900px; /* Tăng độ rộng của bảng */
+      background: #111111; /* Màu sáng hơn nền đen một chút */
+      border-radius: 20px;
+      padding: 10px;
+      /* Hiệu ứng nổi 3D bằng box-shadow */
+      box-shadow: 0 20px 50px rgba(0, 255, 204, 0.15), 
+                  inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      position: relative;
     }
 
     /* Từng item dự án */
     .project-item {
       display: flex;
       align-items: center;
-      gap: 20px;
-      padding: 20px;
-      border-bottom: 1px solid rgba(0, 255, 204, 0.1);
-      transition: background 0.3s;
-    }
-    .project-item:last-child { border-bottom: none; }
-    .project-item:hover {
-      background: rgba(0, 255, 204, 0.05);
+      gap: 30px;
+      padding: 30px;
+      border-bottom: 1px solid rgba(0, 255, 204, 0.05);
+      transition: all 0.3s ease;
+      border-radius: 15px;
     }
 
-    .project-icon { font-size: 2rem; color: #00ffcc; }
-    .project-info h3 { margin: 0; font-size: 1.2rem; }
-    .project-info p { margin: 5px 0 0; font-size: 0.85rem; color: #888; }
+    .project-item:last-child { border-bottom: none; }
+
+    /* Hiệu ứng nổi 3D khi hover vào từng dòng */
+    .project-item:hover {
+      background: #1a1a1a;
+      transform: scale(1.02) translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      z-index: 5;
+    }
+
+    .project-icon { 
+      font-size: 2.5rem; 
+      color: #00ffcc;
+      filter: drop-shadow(0 0 5px rgba(0, 255, 204, 0.5));
+    }
+
+    .project-info h3 { 
+      margin: 0; 
+      font-size: 1.5rem; 
+      color: #00ffcc;
+      letter-spacing: 1px;
+    }
+
+    .project-info p { 
+      margin: 8px 0 0; 
+      font-size: 1rem; 
+      color: #a0a0a0; 
+      line-height: 1.4;
+    }
 
   </style>
 </head>
@@ -144,9 +154,8 @@
 </div>
 
 <div id="projects" class="projects-section">
-  <h2 style="margin-bottom: 20px;">My Work</h2>
-  
-  <div class="projects-scroll-box">
+  <div class="projects-list">
+    
     <div class="project-item">
       <div class="project-icon"><i class="fa-solid fa-server"></i></div>
       <div class="project-info">
@@ -194,9 +203,8 @@
         <p>Hệ thống lưu trữ dữ liệu người chơi qua MySQL cực nhanh.</p>
       </div>
     </div>
-  </div>
-  
-  <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.5;">(Cuộn bên trong danh sách để xem thêm)</p>
+
+    </div>
 </div>
 
 <script>
