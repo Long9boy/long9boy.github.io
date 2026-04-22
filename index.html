@@ -28,18 +28,17 @@
       white-space: nowrap;
       overflow: hidden;
       animation: typing 3s steps(30), blink .7s infinite;
-      margin: 0 auto 20px auto;
+      margin: 0 auto 30px auto;
       width: fit-content; 
     }
 
     @keyframes typing { from { width: 0 } to { width: 100% } }
     @keyframes blink { 50% { border-color: transparent } }
 
-    /* Cấu hình khu vực bao quanh các nút */
     .links {
       display: flex;
       flex-direction: column;
-      gap: 10px; /* Tạo khoảng cách đều giữa các nút */
+      gap: 15px;
     }
 
     .links a {
@@ -53,46 +52,53 @@
       padding: 12px 25px;
       min-width: 220px;
       border-radius: 8px;
-      
-      /* Animation mượt mà kiểu iPhone */
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      /* Animation mượt kiểu iPhone */
+      transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    /* 1. Khi một nút bất kỳ được trỏ vào: Tất cả nút trong group sẽ thu nhỏ lại */
+    /* Khi trỏ vào danh sách: Tất cả mặc định thu nhỏ lại một chút */
     .links:hover a {
-      transform: scale(0.9) translateY(5px);
-      opacity: 0.6;
+      transform: scale(0.9);
+      opacity: 0.5;
     }
 
-    /* 2. Nút đang trực tiếp được trỏ chuột: Phóng to lên */
+    /* NÚT ĐANG HOVER: TO NHẤT */
     .links a:hover {
+      transform: scale(1.2) !important;
+      opacity: 1 !important;
       background: #00ffcc;
       color: black;
-      transform: scale(1.15) translateY(0) !important;
-      opacity: 1 !important;
-      box-shadow: 0 10px 20px rgba(0, 255, 204, 0.3);
       z-index: 10;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
     }
 
-    /* 3. Hiệu ứng bậc thang: Các nút nằm SAU nút đang hover sẽ bị đẩy xuống và thu nhỏ hơn chút nữa */
-    .links a:hover ~ a {
-      transform: scale(0.85) translateY(15px);
-      opacity: 0.4;
+    /* NÚT KẾ TIẾP (Ngay bên dưới): Nhỏ vừa */
+    .links a:hover + a {
+      transform: scale(1) translateY(5px) !important;
+      opacity: 0.8 !important;
     }
+
+    /* NÚT CÁCH 1 BẬC (Bên dưới nút kế tiếp): Nhỏ nhất */
+    .links a:hover + a + a {
+      transform: scale(0.85) translateY(10px) !important;
+      opacity: 0.4 !important;
+    }
+
+    /* LOGIC CHO TRƯỜNG HỢP TRỎ VÀO NÚT Ở GIỮA HOẶC DƯỚI */
+    /* Nếu bạn muốn hiệu ứng này hoàn hảo cho cả nút ở giữa, 
+       CSS có hạn chế là không chọn được phần tử đứng trước. 
+       Tuy nhiên với 3 nút, cấu trúc này hoạt động cực tốt khi trỏ từ trên xuống. */
 
     .links a i {
       margin-right: 12px;
       font-size: 1.3rem;
-      transition: 0.3s;
     }
 
     .icon-yt { color: #FF0000; }
     .icon-kofi { color: #FF5E5B; }
     .icon-discord { color: #5865F2; }
 
-    .links a:hover i {
-      color: black;
-    }
+    .links a:hover i { color: black; }
   </style>
 </head>
 <body>
