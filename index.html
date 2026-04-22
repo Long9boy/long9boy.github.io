@@ -9,19 +9,26 @@
   <link rel="icon" type="image/x-icon" href="MyIcon.ico">
 
   <style>
+    /* Tạo hiệu ứng trượt mượt mà cho toàn bộ trang */
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       font-family: 'Courier New', monospace;
       background: black;
       color: #00ffcc;
+    }
+
+    /* Phần màn hình chào mừng (Hero Section) */
+    .hero {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      overflow: hidden;
+      text-align: center;
     }
-
-    .container { text-align: center; }
 
     .typing {
       border-right: 2px solid #00ffcc;
@@ -54,56 +61,61 @@
       border-radius: 8px;
       transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
       position: relative;
+      cursor: pointer;
     }
 
-    /* Khi trỏ chuột vào một nút cụ thể */
-    .links a.hover-large {
-      transform: scale(1.25);
-      background: #00ffcc;
-      color: black;
-      opacity: 1;
-      z-index: 10;
-      box-shadow: 0 0 25px rgba(0, 255, 204, 0.5);
-    }
+    /* Hiệu ứng trỏ chuột iPhone-style */
+    .links a.hover-large { transform: scale(1.25); background: #00ffcc; color: black; opacity: 1; z-index: 10; box-shadow: 0 0 25px rgba(0, 255, 204, 0.5); }
+    .links a.hover-medium { transform: scale(0.95); opacity: 0.6; }
+    .links a.hover-small { transform: scale(0.8); opacity: 0.3; }
 
-    /* Nút lân cận (cách 1 bậc) */
-    .links a.hover-medium {
-      transform: scale(0.95);
-      opacity: 0.6;
-    }
-
-    /* Nút ở xa (cách 2 bậc) */
-    .links a.hover-small {
-      transform: scale(0.8);
-      opacity: 0.3;
-    }
-
-    /* Trạng thái khi không hover vào khu vực link */
     .links a i { margin-right: 12px; font-size: 1.3rem; }
     .icon-yt { color: #FF0000; }
-    .icon-kofi { color: #FF5E5B; }
     .icon-discord { color: #5865F2; }
+    .icon-project { color: #f1c40f; } /* Màu vàng cho Project */
+    
     .links a.hover-large i { color: black; }
+
+    /* Phần nội dung Project phía dưới */
+    .projects-section {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #0a0a0a; /* Màu nền hơi khác một chút để phân biệt */
+      border-top: 1px solid #00ffcc;
+    }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h1 class="typing">Hi, I'm Long9tpmcr</h1>
-  <p style="margin-bottom: 30px;">Developer | Minecraft | Coding</p>
+<div class="hero">
+  <div class="container">
+    <h1 class="typing">Hi, I'm Long9tpmcr</h1>
+    <p style="margin-bottom: 30px;">Developer | Minecraft | Coding</p>
 
-  <div class="links" id="link-container">
-    <a href="https://www.youtube.com/@long9tpmcr" target="_blank" rel="noopener noreferrer">
-      <i class="fa-brands fa-youtube icon-yt"></i> YouTube
-    </a>
+    <div class="links" id="link-container">
+      <a href="https://www.youtube.com/@long9tpmcr" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-youtube icon-yt"></i> YouTube
+      </a>
 
-    <a href="#" target="_blank" rel="noopener noreferrer">
-      <i class="fa-solid fa-mug-hot icon-kofi"></i> Ko-fi
-    </a>
+      <a href="https://discord.gg/eD9726Vv" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-discord icon-discord"></i> Discord
+      </a>
 
-    <a href="#" target="_blank" rel="noopener noreferrer">
-      <i class="fa-brands fa-discord icon-discord"></i> Discord
-    </a>
+      <a href="#projects">
+        <i class="fa-solid fa-code icon-project"></i> Recent Project
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="projects" class="projects-section">
+  <h2>My Recent Projects</h2>
+  <p>Đang cập nhật các dự án Minecraft và Web...</p>
+  <div style="margin-top: 20px;">
+    <a href="#" style="color: #00ffcc; text-decoration: none; border: 1px solid #00ffcc; padding: 10px;">Xem trên GitHub</a>
   </div>
 </div>
 
@@ -114,26 +126,17 @@
   links.forEach((link, index) => {
     link.addEventListener('mouseenter', () => {
       links.forEach((l, i) => {
-        const distance = Math.abs(i - index); // Tính khoảng cách từ nút đang trỏ tới các nút khác
-        
+        const distance = Math.abs(i - index);
         l.classList.remove('hover-large', 'hover-medium', 'hover-small');
-        
-        if (distance === 0) {
-          l.classList.add('hover-large');
-        } else if (distance === 1) {
-          l.classList.add('hover-medium');
-        } else {
-          l.classList.add('hover-small');
-        }
+        if (distance === 0) l.classList.add('hover-large');
+        else if (distance === 1) l.classList.add('hover-medium');
+        else l.classList.add('hover-small');
       });
     });
   });
 
-  // Reset khi rời chuột khỏi toàn bộ khu vực links
   container.addEventListener('mouseleave', () => {
-    links.forEach(l => {
-      l.classList.remove('hover-large', 'hover-medium', 'hover-small');
-    });
+    links.forEach(l => l.classList.remove('hover-large', 'hover-medium', 'hover-small'));
   });
 </script>
 
