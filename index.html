@@ -1,42 +1,216 @@
 ```html
-<!-- ===== PROJECT SECTION ===== -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Long9boy | Portfolio</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="icon" type="image/x-icon" href="MyIcon.ico" />
+
+<style>
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    font-family: "Courier New", monospace;
+    background: black;
+    color: #00ffcc;
+    overflow-x: hidden;
+}
+
+/* HERO */
+.hero {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("Background.png") center/cover fixed;
+}
+
+.container { text-align: center; }
+
+.typing {
+    border-right: 3px solid #00ffcc;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: typing 3s steps(30), blink 0.7s infinite;
+    font-size: 2.5rem;
+}
+
+@keyframes typing { from { width: 0 } to { width: 100% } }
+@keyframes blink { 50% { border-color: transparent } }
+
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+    align-items: center;
+}
+
+.links a {
+    color: #00ffcc;
+    border: 1px solid #00ffcc;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+/* PROJECT */
+.projects-section {
+    padding: 100px 20px;
+}
+
+.projects-list {
+    max-width: 1000px;
+    margin: auto;
+    background: #111;
+    border-radius: 20px;
+    padding: 15px;
+}
+
+.project-item {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.project-item:hover {
+    background: #1a1a1a;
+    transform: scale(1.02);
+}
+
+.project-media {
+    width: 200px;
+    height: 120px;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.project-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.no-image {
+    font-size: 2rem;
+    opacity: 0.5;
+}
+
+.project-info h3 {
+    margin: 0;
+    color: white;
+}
+
+.description {
+    margin-top: 10px;
+    color: white;
+    font-family: Times;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+/* MODAL */
+.modal-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(20px);
+}
+
+.modal-content {
+    background: rgba(20,20,20,0.6);
+    padding: 20px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 800px;
+}
+
+.modal-video-container {
+    width: 100%;
+    aspect-ratio: 16/9;
+}
+
+.modal-video-container iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.modal-btn {
+    display: inline-block;
+    margin-top: 20px;
+    background: #00ffcc;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h2 id="modalProjectTitle"></h2>
+        <div id="modalVideoSection" class="modal-video-container"></div>
+        <p id="modalDescription"></p>
+        <a id="modalOpenLink" target="_blank" class="modal-btn">OPEN LINK</a>
+    </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="container">
+        <h1 class="typing">Hi, I'm Long9boy</h1>
+        <p>Developer | Minecraft</p>
+
+        <div class="links">
+            <a href="https://www.youtube.com/@long9tpmcr" target="_blank">YouTube</a>
+            <a href="https://discord.gg/eD9726Vv" target="_blank">Discord</a>
+            <a href="#projects">Projects</a>
+        </div>
+    </div>
+</div>
+
+<!-- PROJECTS -->
 <div id="projects" class="projects-section">
     <div class="projects-list">
 
-        <!-- PROJECT 1 -->
         <div class="project-item"
-            data-title="Yasuo Addon 1.21.15+"
-            data-description="Addon Yasuo trong Minecraft"
+            data-title="Yasuo Addon"
+            data-description="Addon Yasuo Minecraft"
             data-youtube="https://youtu.be/kFUL31ziGOI"
-            data-link="https://www.mediafire.com/file/bp6rsmdlgm1xue9/Yasuo_Nightbringer.mcaddon/file"
-        >
+            data-link="https://mediafire.com">
             <div class="project-media"></div>
-            <div class="project-info">
+            <div>
                 <h3></h3>
                 <div class="description"></div>
             </div>
         </div>
 
-        <!-- PROJECT 2 -->
         <div class="project-item"
-            data-title="New Crate v2"
-            data-description="Hệ thống crate mới"
-            data-image="your-image.png"
-            data-link="https://example.com"
-        >
+            data-title="Crate System"
+            data-description="Hệ thống crate"
+            data-image="your-image.png">
             <div class="project-media"></div>
-            <div class="project-info">
-                <h3></h3>
-                <div class="description"></div>
-            </div>
-        </div>
-
-        <!-- PROJECT 3 -->
-        <div class="project-item"
-            data-title="Test Project"
-        >
-            <div class="project-media"></div>
-            <div class="project-info">
+            <div>
                 <h3></h3>
                 <div class="description"></div>
             </div>
@@ -45,123 +219,80 @@
     </div>
 </div>
 
-<!-- ===== CSS ADD ===== -->
-<style>
-.no-image {
-    font-size: 2rem;
-    color: #00ffcc;
-    opacity: 0.5;
-}
-
-.modal-overlay {
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(20px);
-}
-
-.modal-content {
-    background: rgba(20, 20, 20, 0.6);
-    border-radius: 20px;
-    backdrop-filter: blur(20px);
-}
-
-.modal-header-title {
-    text-align: left;
-}
-</style>
-
-<!-- ===== JS ===== -->
 <script>
 const overlay = document.getElementById("modalOverlay");
 
-function getYoutubeId(url) {
-    if (!url) return null;
-
-    if (url.includes("watch?v=")) {
-        return url.split("v=")[1].split("&")[0];
-    }
-
-    return url.split("/").pop().split("?")[0];
+function getYoutubeId(url){
+    if(!url) return null;
+    if(url.includes("watch?v=")) return url.split("v=")[1].split("&")[0];
+    return url.split("/").pop();
 }
 
-function loadProjects() {
-    const items = document.querySelectorAll(".project-item");
-
-    items.forEach(async (item) => {
-        const title = item.dataset.title || "No title";
+function loadProjects(){
+    document.querySelectorAll(".project-item").forEach(async item=>{
+        const title = item.dataset.title;
         const desc = item.dataset.description || "";
         const youtube = item.dataset.youtube;
         const image = item.dataset.image;
 
+        item.querySelector("h3").innerText = title;
+
         const media = item.querySelector(".project-media");
-        const titleEl = item.querySelector("h3");
-        const descEl = item.querySelector(".description");
 
-        titleEl.innerText = title;
-
-        // IMAGE
-        if (youtube) {
+        if(youtube){
             const id = getYoutubeId(youtube);
             media.innerHTML = `<img src="https://img.youtube.com/vi/${id}/hqdefault.jpg">`;
-        } else if (image) {
+        }
+        else if(image){
             media.innerHTML = `<img src="${image}">`;
-        } else {
+        }
+        else{
             media.innerHTML = `<i class="fa-solid fa-image-slash no-image"></i>`;
         }
 
-        // DESCRIPTION
-        if (youtube) {
-            try {
+        if(youtube){
+            try{
                 const res = await fetch(`https://noembed.com/embed?url=${youtube}`);
                 const data = await res.json();
-
-                descEl.innerHTML =
-                    `<span class="yt-title-line">${data.title}</span>` +
-                    (desc || "");
-            } catch {
-                descEl.innerText = desc;
+                item.querySelector(".description").innerHTML =
+                    `<b>${data.title}</b><br>${desc}`;
+            }catch{
+                item.querySelector(".description").innerText = desc;
             }
         } else {
-            descEl.innerText = desc;
+            item.querySelector(".description").innerText = desc;
         }
 
-        item.onclick = () => openModal(item);
+        item.onclick = ()=>openModal(item);
     });
 }
 
-function openModal(item) {
+function openModal(item){
     const title = item.dataset.title;
     const desc = item.dataset.description || "";
     const youtube = item.dataset.youtube;
     const link = item.dataset.link;
 
-    document.getElementById("modalProjectTitle").innerText = title;
-    document.getElementById("modalDescription").innerText = desc;
-    document.getElementById("modalOpenLink").href = link || "#";
+    modalProjectTitle.innerText = title;
+    modalDescription.innerText = desc;
+    modalOpenLink.href = link || "#";
 
-    const videoSection = document.getElementById("modalVideoSection");
-
-    if (youtube) {
+    if(youtube){
         const id = getYoutubeId(youtube);
-
-        videoSection.innerHTML =
+        modalVideoSection.innerHTML =
             `<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>`;
-        videoSection.style.display = "block";
     } else {
-        videoSection.innerHTML = "";
-        videoSection.style.display = "none";
+        modalVideoSection.innerHTML = "";
     }
 
     overlay.style.display = "flex";
-    document.body.style.overflow = "hidden";
 }
 
-function closeModal() {
-    overlay.style.display = "none";
-    document.body.style.overflow = "auto";
-}
+overlay.onclick = ()=> overlay.style.display = "none";
 
-overlay.addEventListener("click", closeModal);
-
-window.addEventListener("DOMContentLoaded", loadProjects);
+window.onload = loadProjects;
 </script>
+
+</body>
+</html>
 ```
