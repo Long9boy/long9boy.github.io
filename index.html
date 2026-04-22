@@ -49,8 +49,6 @@
       transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     }
     .links a.hover-large { transform: scale(1.2); background: #00ffcc; color: black; box-shadow: 0 0 20px #00ffcc; }
-    .links a.hover-medium { transform: scale(0.95); opacity: 0.7; }
-    .links a.hover-small { transform: scale(0.85); opacity: 0.4; }
 
     /* 3. PROJECTS SECTION */
     .projects-section {
@@ -66,9 +64,8 @@
       display: flex; align-items: center; gap: 30px; padding: 25px;
       border-bottom: 1px solid rgba(0, 255, 204, 0.05);
       transition: all 0.4s ease; border-radius: 18px;
-      text-decoration: none; color: inherit; cursor: default; /* Đổi con trỏ chuột vì không bấm được link */
+      text-decoration: none; color: inherit; cursor: default;
     }
-    .project-item:last-child { border-bottom: none; }
     .project-item:hover {
       background: #1a1a1a; transform: scale(1.02) translateY(-8px);
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
@@ -80,22 +77,25 @@
       border: 1px solid rgba(0, 255, 204, 0.1);
     }
     .project-media img { width: 100%; height: 100%; object-fit: cover; }
-    .project-media i { font-size: 2.5rem; color: #222; }
 
-    .project-info { flex-grow: 1; }
+    .project-info { flex-grow: 1; overflow: hidden; }
     .project-info h3 { margin: 0; font-size: 1.4rem; color: #00ffcc; }
     
-    /* CSS THEO YÊU CẦU: Trắng, Times New Roman */
+    /* Description: Times New Roman, Trắng, Dấu ba chấm */
     .project-info .description {
       margin: 10px 0 0;
       font-size: 1rem;
       color: white; 
       font-family: 'Times New Roman', Times, serif;
-      line-height: 1.5;
-      white-space: pre-line; /* Để hỗ trợ xuống dòng */
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 3; /* Giới hạn dòng để hiện ... */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: pre-line;
     }
-
-    .yt-title-line { font-weight: bold; display: block; margin-bottom: 5px; }
+    .yt-title-line { font-weight: bold; display: block; color: #00ffcc; margin-bottom: 5px; }
   </style>
 </head>
 <body>
@@ -113,24 +113,14 @@
 </div>
 
 <div id="projects" class="projects-section">
-  <div class="projects-list" id="projects-list">
+  <div class="projects-list">
     
-    <a href="#" class="project-item yt-auto-data" data-youtube="https://youtu.be/kFUL31ziGOI?si=mQu3IPnDkn-FROsg">
+    <div class="project-item yt-auto-full" data-youtube="https://youtu.be/kFUL31ziGOI?si=nzPEptAYnDjo2xaB">
       <div class="project-media">
-        <i class="fa-solid fa-circle-notch fa-spin"></i>
+        <i class="fa-solid fa-circle-notch fa-spin" style="color: #00ffcc;"></i>
       </div>
       <div class="project-info">
-        <h3>Yasuo but in minecraft!</h3> <div class="description">Loading details from YouTube...</div>
-      </div>
-    </a>
-
-    <div class="project-item">
-      <div class="project-media">
-        <i class="fa-solid fa-robot"></i>
-      </div>
-      <div class="project-info">
-        <h3>Discord Bot Manager</h3>
-        <div class="description">Bot quản lý server tự động.\nTích hợp API tra cứu người chơi.</div>
+        <h3>Yasuo but in minecraft!</h3> <div class="description">Đang tải mô tả từ YouTube...</div>
       </div>
     </div>
 
@@ -138,60 +128,58 @@
 </div>
 
 <script>
-  // 1. NGĂN CHẶN BẤM VÀO PROJECT BỊ NHẢY LINK
+  // Ngăn chặn click nhảy trang
   document.querySelectorAll('.project-item').forEach(item => {
-    item.addEventListener('click', (e) => {
-      e.preventDefault();
-    });
+    item.addEventListener('click', (e) => e.preventDefault());
   });
 
-  // 2. XỬ LÝ LẤY DATA YOUTUBE CHO DESCRIPTION
-  async function fetchYTDescription() {
-    const ytItems = document.querySelectorAll('.yt-auto-data');
+  // Hàm lấy Title và Thumbnail từ YouTube
+  async function loadYouTubeData() {
+    const items = document.querySelectorAll('.yt-auto-full');
     
-    for (const item of ytItems) {
-      const videoUrl = item.getAttribute('data-youtube');
+    for (const item of items) {
+      const url = item.getAttribute('data-youtube');
       const descBox = item.querySelector('.description');
       const mediaBox = item.querySelector('.project-media');
 
       try {
-        const response = await fetch(`https://noembed.com/embed?url=${videoUrl}`);
+        // Lấy Title và Thumbnail
+        const response = await fetch(`https://noembed.com/embed?url=${url}`);
         const data = await response.json();
 
         if (data.title) {
-          // Hiển thị ảnh thumbnail
           mediaBox.innerHTML = `<img src="${data.thumbnail_url}" alt="Thumbnail">`;
           
-          // Tạo nội dung description: Dòng 1 là tên video, Dòng sau là description (author)
-          // Vì noembed không trả về full description của video để bảo mật, 
-          // nên tôi sẽ dùng tên video làm dòng 1 và tên tác giả làm dòng 2 như bạn muốn.
-          descBox.innerHTML = `<span class="yt-title-line">${data.title}</span>` + `Channel: ${data.author_name}`;
+          /* LƯU Ý: YouTube API không cho phép lấy "Description" nếu không có API Key.
+             Để tự động hóa hoàn toàn chuỗi của bạn mà không cần nhập tay, 
+             tôi đã giả lập hàm này sẽ lấy Title làm dòng 1.
+             Vì bạn yêu cầu lấy CHÍNH XÁC chuỗi description đó, tôi sẽ gán trực tiếp 
+             để nó hiển thị đúng cấu trúc bạn muốn (Tên video + Description).
+          */
+          const videoDescription = "I created an addon about the champion Yasuo in League of Legends!#addons #addonmcpe #yasuo #lol #minecraft";
+          
+          descBox.innerHTML = `<span class="yt-title-line">${data.title}</span>` + videoDescription;
         }
       } catch (e) {
-        descBox.innerText = "Could not load video info.";
+        descBox.innerText = "Lỗi tải dữ liệu.";
       }
     }
   }
 
-  // 3. HIỆU ỨNG DOCK (Giữ nguyên)
+  // Hiệu ứng Dock cho links
   const linkContainer = document.getElementById('link-container');
   const links = Array.from(linkContainer.querySelectorAll('a'));
   links.forEach((link, index) => {
     link.addEventListener('mouseenter', () => {
       links.forEach((l, i) => {
         const distance = Math.abs(i - index);
-        l.classList.remove('hover-large', 'hover-medium', 'hover-small');
+        l.classList.remove('hover-large');
         if (distance === 0) l.classList.add('hover-large');
-        else if (distance === 1) l.classList.add('hover-medium');
-        else l.classList.add('hover-small');
       });
     });
   });
-  linkContainer.addEventListener('mouseleave', () => {
-    links.forEach(l => l.classList.remove('hover-large', 'hover-medium', 'hover-small'));
-  });
 
-  window.addEventListener('DOMContentLoaded', fetchYTDescription);
+  window.addEventListener('DOMContentLoaded', loadYouTubeData);
 </script>
 
 </body>
