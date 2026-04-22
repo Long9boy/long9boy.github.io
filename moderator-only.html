@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checking Access...</title>
+    <style>
+        body { background: black; color: #00ffcc; font-family: 'Courier New', monospace; text-align: center; padding-top: 100px; }
+        .error { color: #ff4444; border: 1px solid #ff4444; padding: 20px; display: inline-block; }
+    </style>
+</head>
+<body>
+    <div id="status">Đang xác thực quyền Admin...</div>
+
+    <script>
+        // Cấu hình của bạn
+        const CLIENT_ID = "YOUR_CLIENT_ID_HERE"; // Thay Client ID của bạn vào đây
+        const ADMIN_USERNAME = "long9boy"; // Chỉ username này mới vào được
+
+        // 1. Kiểm tra xem có mã Code từ GitHub gửi về chưa
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+
+        if (!code) {
+            // Nếu chưa đăng nhập, chuyển hướng đến GitHub để login
+            window.location.href = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user`;
+        } else {
+            // 2. Nếu có code, thực hiện gọi API để lấy thông tin user
+            // Lưu ý: Trong môi trường GitHub Pages (Client-side), việc lấy Access Token từ Code 
+            // thường cần một Proxy nhỏ vì lý do bảo mật (CORS).
+            // Dưới đây là logic xử lý giả lập để bạn hiểu luồng:
+
+            checkAccess(code);
+        }
+
+        async function checkAccess(code) {
+            document.getElementById('status').innerText = "Đang kiểm tra Username...";
+
+            try {
+                // Ở bước này, thông thường bạn sẽ gửi 'code' lên một Worker hoặc Server để đổi lấy Access Token.
+                // Sau khi có Token, bạn gọi API: https://api.github.com/user
+                
+                /* Giả sử sau khi fetch thông tin từ GitHub API, bạn có dữ liệu người dùng:
+                   const userData = await response.json(); 
+                */
+
+                // MÔ PHỎNG KIỂM TRA:
+                const loggedInUser = "username_vừa_đăng_nhập"; // Lấy từ API
+
+                if (loggedInUser === ADMIN_USERNAME) {
+                    document.getElementById('status').innerHTML = "<h1>Chào mừng chủ nhân!</h1><p>Đang mở bảng điều khiển...</p>";
+                    // Thực hiện redirect vào trang bí mật hoặc hiện nội dung admin
+                } else {
+                    document.getElementById('status').innerHTML = `
+                        <div class="error">
+                            <h2>TRUY CẬP BỊ TỪ CHỐI</h2>
+                            <p>Tài khoản ${loggedInUser} không có quyền truy cập vào đây.</p>
+                            <a href="index.html" style="color: white;">Quay lại trang chủ</a>
+                        </div>
+                    `;
+                }
+            } catch (err) {
+                document.getElementById('status').innerText = "Có lỗi xảy ra trong quá trình xác thực.";
+            }
+        }
+    </script>
+</body>
+</html>
