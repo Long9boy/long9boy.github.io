@@ -9,7 +9,7 @@
   <link rel="icon" type="image/x-icon" href="MyIcon.ico">
 
   <style>
-    /* Hiệu ứng trượt mượt mà khi bấm link nội bộ */
+    /* Cho phép cuộn trang mượt mà */
     html {
       scroll-behavior: smooth;
     }
@@ -17,11 +17,11 @@
     body {
       margin: 0;
       font-family: 'Courier New', monospace;
-      background: black; /* Màu nền dự phòng nếu ảnh không load được */
+      background: black;
       color: #00ffcc;
     }
 
-    /* PHẦN NỀN CHÍNH (HERO SECTION) */
+    /* PHẦN 1: MÀN HÌNH CHÀO MỪNG (HERO SECTION) */
     .hero {
       position: relative;
       height: 100vh;
@@ -31,34 +31,33 @@
       align-items: center;
       text-align: center;
       
-      /* Cấu hình ảnh nền Background.png */
+      /* Cài đặt ảnh nền */
       background-image: url('Background.png');
-      background-size: cover;      /* Ảnh phủ kín màn hình */
-      background-position: center; /* Ảnh luôn nằm giữa */
-      background-attachment: fixed; /* Tạo hiệu ứng Parallax nhẹ khi cuộn */
+      background-size: cover;      /* Ảnh luôn phủ kín màn hình */
+      background-position: center; /* Căn giữa ảnh */
+      background-attachment: fixed; /* Hiệu ứng ảnh đứng yên khi cuộn (Parallax) */
     }
 
-    /* LỚP PHỦ TỐI (OVERLAY) - Tạo cảm giác bóng râm và chia 5 phần */
+    /* LỚP PHỦ MÀU ĐEN (OVERLAY) */
+    /* Dùng để làm tối ảnh và tạo ranh giới đen đặc ở dưới cùng */
     .hero::before {
       content: "";
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
       
-      /* Gradient chia 5 phần: 
-         - Trên cùng hơi tối (như bóng râm)
-         - Ở giữa rõ ảnh hơn một chút
-         - 1/5 cuối cùng (80% -> 100%) là màu đen đặc */
+      /* Giải thích Gradient:
+         - 0% đến 70%: Màu đen nhạt (rgba 0.5) để chữ dễ đọc nhưng vẫn thấy ảnh.
+         - 80% đến 100%: Chuyển dần sang đen đặc hoàn toàn để tạo ranh giới 1/5 bên dưới. */
       background: linear-gradient(
         to bottom,
-        rgba(0, 0, 0, 0.8) 0%,    /* 1/5 đầu: Tối nhiều (Bóng râm trên) */
-        rgba(0, 0, 0, 0.4) 20%,   /* 2/5 -> 4/5: Ảnh hiện rõ dần */
-        rgba(0, 0, 0, 0.4) 80%,   
-        rgba(0, 0, 0, 1) 100%     /* 1/5 cuối: Đen hoàn toàn (Ranh giới) */
+        rgba(0, 0, 0, 0.5) 0%,    /* Trên cùng: Đen mờ */
+        rgba(0, 0, 0, 0.5) 70%,   /* Giữa: Giữ nguyên độ mờ */
+        rgba(0, 0, 0, 1) 100%     /* Dưới cùng (1/5 cuối): Đen đặc hoàn toàn */
       );
-      z-index: 1; /* Nằm trên ảnh nền nhưng dưới nội dung chữ */
+      z-index: 1;
     }
 
-    /* Đảm bảo nội dung chữ luôn nằm trên lớp phủ tối */
+    /* Đảm bảo nội dung luôn nổi lên trên lớp phủ đen */
     .container {
       position: relative;
       z-index: 2;
@@ -77,7 +76,7 @@
     @keyframes typing { from { width: 0 } to { width: 100% } }
     @keyframes blink { 50% { border-color: transparent } }
 
-    /* DANH SÁCH CÁC NÚT BẤM */
+    /* DANH SÁCH NÚT BẤM */
     .links {
       display: flex;
       flex-direction: column;
@@ -95,15 +94,16 @@
       padding: 12px 25px;
       min-width: 220px;
       border-radius: 8px;
-      background: rgba(0, 0, 0, 0.3); /* Nền nút hơi trong suốt để thấy ảnh */
-      transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      background: rgba(0, 0, 0, 0.4); /* Nền nút hơi trong suốt */
+      transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* Animation kiểu iPhone */
     }
 
-    /* Hiệu ứng trỏ chuột iPhone-style (Đã xử lý bằng JS ở dưới) */
+    /* CSS cho các class sẽ được thêm bằng JavaScript khi hover */
     .links a.hover-large { transform: scale(1.25); background: #00ffcc; color: black; opacity: 1; z-index: 10; box-shadow: 0 0 25px rgba(0, 255, 204, 0.5); }
     .links a.hover-medium { transform: scale(0.95); opacity: 0.6; }
     .links a.hover-small { transform: scale(0.8); opacity: 0.3; }
 
+    /* Màu sắc Icon */
     .links a i { margin-right: 12px; font-size: 1.3rem; }
     .icon-yt { color: #FF0000; }
     .icon-discord { color: #5865F2; }
@@ -111,14 +111,15 @@
     
     .links a.hover-large i { color: black; }
 
-    /* PHẦN NỘI DUNG PROJECTS PHÍA DƯỚI */
+    /* PHẦN 2: TRANG DỰ ÁN (PROJECTS SECTION) */
     .projects-section {
       height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: black; /* Tiếp nối phần màu đen 1/5 của ảnh trên */
+      background: black; /* Tiếp nối phần đen đặc ở cuối Hero */
+      text-align: center;
     }
   </style>
 </head>
@@ -147,28 +148,28 @@
 
 <div id="projects" class="projects-section">
   <h2 style="font-size: 2.5rem;">My Recent Projects</h2>
-  <p>Khám phá các dự án Minecraft và Coding của mình bên dưới.</p>
+  <p>Website đang được phát triển bởi Long9tpmcr.</p>
 </div>
 
 <script>
-  // SCRIPT XỬ LÝ HIỆU ỨNG TRỎ CHUỘT PHÓNG TO/THU NHỎ BẬC THANG
+  /* JAVASCRIPT XỬ LÝ HIỆU ỨNG IPHONE DOCK (PHÓNG TO THEO KHOẢNG CÁCH) */
   const container = document.getElementById('link-container');
   const links = Array.from(container.querySelectorAll('a'));
 
   links.forEach((link, index) => {
     link.addEventListener('mouseenter', () => {
       links.forEach((l, i) => {
-        const distance = Math.abs(i - index); // Khoảng cách giữa các nút
+        const distance = Math.abs(i - index); // Tính nút nào gần nút đang trỏ nhất
         l.classList.remove('hover-large', 'hover-medium', 'hover-small');
         
-        if (distance === 0) l.classList.add('hover-large');     // Nút đang chọn
-        else if (distance === 1) l.classList.add('hover-medium'); // Nút kế bên
-        else l.classList.add('hover-small');                    // Nút ở xa
+        if (distance === 0) l.classList.add('hover-large');     // Nút to nhất
+        else if (distance === 1) l.classList.add('hover-medium'); // Nút kế bên nhỏ hơn
+        else l.classList.add('hover-small');                    // Nút xa nhất nhỏ nhất
       });
     });
   });
 
-  // Khi rời chuột ra khỏi vùng chứa thì trả về trạng thái bình thường
+  /* Khi đưa chuột ra ngoài, xóa hết các class hiệu ứng */
   container.addEventListener('mouseleave', () => {
     links.forEach(l => l.classList.remove('hover-large', 'hover-medium', 'hover-small'));
   });
