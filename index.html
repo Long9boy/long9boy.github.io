@@ -164,14 +164,14 @@
         
         if (distance === 0) l.classList.add('hover-large');     // Nút to nhất
         else if (distance === 1) l.classList.add('hover-medium'); // Nút kế bên nhỏ hơn
-        else l.classList.add('hover-tiny');                    // Nút xa nhất nhỏ nhất
+        else l.classList.add('hover-small');                    // Nút xa nhất nhỏ nhất
       });
     });
   });
 
   /* Khi đưa chuột ra ngoài, xóa hết các class hiệu ứng */
   container.addEventListener('mouseleave', () => {
-    links.forEach(l => l.classList.remove('hover-large', 'hover-medium', 'hover-tiny'));
+    links.forEach(l => l.classList.remove('hover-large', 'hover-medium', 'hover-small'));
   });
 </script>
 
