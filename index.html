@@ -103,9 +103,10 @@ body {
   opacity: 0.7;
 
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3; /* 1 title + 2 desc */
   -webkit-box-orient: vertical;
   overflow: hidden;
+  white-space: pre-line;
 }
 
 /* MODAL */
@@ -173,18 +174,18 @@ body {
   </div>
 </div>
 
-<!-- PROJECT -->
+<!-- PROJECTS -->
 <div class="projects-section">
   <div class="projects-list">
 
-    <!-- PROJECT 1 -->
+    <!-- PROJECT 1 (YOUTUBE) -->
     <div class="project-item"
-      data-youtube="https://youtu.be/kFUL31ziGOI"
-      data-download="https://www.mediafire.com/file/bp6rsmdlgm1xue9/Yasuo_Nightbringer.mcaddon/file"
+      data-youtube="https://youtu.be/LULR6LoIOdM"
+      data-download="https://example.com"
       onclick="openProject(this)">
       <div class="project-media"></div>
-      <div>
-        <h3>Yasuo Addon</h3>
+      <div class="project-info">
+        <h3>New Crate [v2] 1.21.30+</h3>
         <div class="description"></div>
       </div>
     </div>
@@ -192,11 +193,11 @@ body {
     <!-- PROJECT 2 (NO YOUTUBE) -->
     <div class="project-item"
       data-image=""
-      data-description="Custom project không có youtube"
+      data-description="Đây là project không có YouTube"
       data-download="#"
       onclick="openProject(this)">
       <div class="project-media"></div>
-      <div>
+      <div class="project-info">
         <h3>Custom Project</h3>
         <div class="description"></div>
       </div>
@@ -217,16 +218,13 @@ async function loadProjects() {
     const media = item.querySelector('.project-media');
     const descBox = item.querySelector('.description');
 
-    // mặc định
     media.innerHTML = `<i class="fa-solid fa-image"></i>`;
     descBox.innerText = desc || "";
 
-    // có ảnh riêng
     if (img) {
       media.innerHTML = `<img src="${img}">`;
     }
 
-    // có youtube
     if (yt) {
       try {
         let id = yt.includes('v=')
@@ -236,10 +234,9 @@ async function loadProjects() {
         // thumbnail
         media.innerHTML = `<img src="https://img.youtube.com/vi/${id}/hqdefault.jpg">`;
 
-        // lấy title + description
+        // API lấy title + description
         const res = await fetch(`https://yt.lemnoslife.com/noKey/videos?part=snippet&id=${id}`);
         const data = await res.json();
-
         const snippet = data.items[0].snippet;
 
         let text = snippet.title;
@@ -270,18 +267,23 @@ function openProject(el) {
   videoBox.innerHTML = "";
 
   if (yt) {
-    let id = yt.includes('v=') ? yt.split('v=')[1] : yt.split('/').pop();
+    let id = yt.includes('v=')
+      ? yt.split('v=')[1].split('&')[0]
+      : yt.split('/').pop();
+
     videoBox.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>`;
   }
 
   document.getElementById('modalBtn').onclick = () => window.open(link, "_blank");
 
   document.getElementById('modalOverlay').style.display = "flex";
+  document.body.style.overflow = "hidden";
 }
 
 document.getElementById('modalOverlay').onclick = function () {
   this.style.display = "none";
   document.getElementById('modalVideo').innerHTML = "";
+  document.body.style.overflow = "auto";
 };
 
 window.onload = loadProjects;
