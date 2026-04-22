@@ -9,7 +9,7 @@
   <link rel="icon" type="image/x-icon" href="MyIcon.ico">
 
   <style>
-    /* Tạo hiệu ứng trượt mượt mà cho toàn bộ trang */
+    /* Hiệu ứng trượt mượt mà khi bấm link nội bộ */
     html {
       scroll-behavior: smooth;
     }
@@ -17,19 +17,54 @@
     body {
       margin: 0;
       font-family: 'Courier New', monospace;
-      background: black;
+      background: black; /* Màu nền dự phòng nếu ảnh không load được */
       color: #00ffcc;
     }
 
-    /* Phần màn hình chào mừng (Hero Section) */
+    /* PHẦN NỀN CHÍNH (HERO SECTION) */
     .hero {
+      position: relative;
+      height: 100vh;
+      width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
       text-align: center;
+      
+      /* Cấu hình ảnh nền Background.png */
+      background-image: url('Background.png');
+      background-size: cover;      /* Ảnh phủ kín màn hình */
+      background-position: center; /* Ảnh luôn nằm giữa */
+      background-attachment: fixed; /* Tạo hiệu ứng Parallax nhẹ khi cuộn */
     }
 
+    /* LỚP PHỦ TỐI (OVERLAY) - Tạo cảm giác bóng râm và chia 5 phần */
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      
+      /* Gradient chia 5 phần: 
+         - Trên cùng hơi tối (như bóng râm)
+         - Ở giữa rõ ảnh hơn một chút
+         - 1/5 cuối cùng (80% -> 100%) là màu đen đặc */
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.8) 0%,    /* 1/5 đầu: Tối nhiều (Bóng râm trên) */
+        rgba(0, 0, 0, 0.4) 20%,   /* 2/5 -> 4/5: Ảnh hiện rõ dần */
+        rgba(0, 0, 0, 0.4) 80%,   
+        rgba(0, 0, 0, 1) 100%     /* 1/5 cuối: Đen hoàn toàn (Ranh giới) */
+      );
+      z-index: 1; /* Nằm trên ảnh nền nhưng dưới nội dung chữ */
+    }
+
+    /* Đảm bảo nội dung chữ luôn nằm trên lớp phủ tối */
+    .container {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* HIỆU ỨNG GÕ CHỮ */
     .typing {
       border-right: 2px solid #00ffcc;
       white-space: nowrap;
@@ -42,6 +77,7 @@
     @keyframes typing { from { width: 0 } to { width: 100% } }
     @keyframes blink { 50% { border-color: transparent } }
 
+    /* DANH SÁCH CÁC NÚT BẤM */
     .links {
       display: flex;
       flex-direction: column;
@@ -59,12 +95,11 @@
       padding: 12px 25px;
       min-width: 220px;
       border-radius: 8px;
+      background: rgba(0, 0, 0, 0.3); /* Nền nút hơi trong suốt để thấy ảnh */
       transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-      position: relative;
-      cursor: pointer;
     }
 
-    /* Hiệu ứng trỏ chuột iPhone-style */
+    /* Hiệu ứng trỏ chuột iPhone-style (Đã xử lý bằng JS ở dưới) */
     .links a.hover-large { transform: scale(1.25); background: #00ffcc; color: black; opacity: 1; z-index: 10; box-shadow: 0 0 25px rgba(0, 255, 204, 0.5); }
     .links a.hover-medium { transform: scale(0.95); opacity: 0.6; }
     .links a.hover-small { transform: scale(0.8); opacity: 0.3; }
@@ -72,19 +107,18 @@
     .links a i { margin-right: 12px; font-size: 1.3rem; }
     .icon-yt { color: #FF0000; }
     .icon-discord { color: #5865F2; }
-    .icon-project { color: #f1c40f; } /* Màu vàng cho Project */
+    .icon-project { color: #f1c40f; }
     
     .links a.hover-large i { color: black; }
 
-    /* Phần nội dung Project phía dưới */
+    /* PHẦN NỘI DUNG PROJECTS PHÍA DƯỚI */
     .projects-section {
       height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: #0a0a0a; /* Màu nền hơi khác một chút để phân biệt */
-      border-top: 1px solid #00ffcc;
+      background: black; /* Tiếp nối phần màu đen 1/5 của ảnh trên */
     }
   </style>
 </head>
@@ -112,29 +146,29 @@
 </div>
 
 <div id="projects" class="projects-section">
-  <h2>My Recent Projects</h2>
-  <p>Đang cập nhật các dự án Minecraft và Web...</p>
-  <div style="margin-top: 20px;">
-    <a href="#" style="color: #00ffcc; text-decoration: none; border: 1px solid #00ffcc; padding: 10px;">Xem trên GitHub</a>
-  </div>
+  <h2 style="font-size: 2.5rem;">My Recent Projects</h2>
+  <p>Khám phá các dự án Minecraft và Coding của mình bên dưới.</p>
 </div>
 
 <script>
+  // SCRIPT XỬ LÝ HIỆU ỨNG TRỎ CHUỘT PHÓNG TO/THU NHỎ BẬC THANG
   const container = document.getElementById('link-container');
   const links = Array.from(container.querySelectorAll('a'));
 
   links.forEach((link, index) => {
     link.addEventListener('mouseenter', () => {
       links.forEach((l, i) => {
-        const distance = Math.abs(i - index);
+        const distance = Math.abs(i - index); // Khoảng cách giữa các nút
         l.classList.remove('hover-large', 'hover-medium', 'hover-small');
-        if (distance === 0) l.classList.add('hover-large');
-        else if (distance === 1) l.classList.add('hover-medium');
-        else l.classList.add('hover-small');
+        
+        if (distance === 0) l.classList.add('hover-large');     // Nút đang chọn
+        else if (distance === 1) l.classList.add('hover-medium'); // Nút kế bên
+        else l.classList.add('hover-small');                    // Nút ở xa
       });
     });
   });
 
+  // Khi rời chuột ra khỏi vùng chứa thì trả về trạng thái bình thường
   container.addEventListener('mouseleave', () => {
     links.forEach(l => l.classList.remove('hover-large', 'hover-medium', 'hover-small'));
   });
