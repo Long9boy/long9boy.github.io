@@ -39,7 +39,7 @@
     @keyframes typing { from { width: 0 } to { width: 100% } }
     @keyframes blink { 50% { border-color: transparent } }
 
-    /* DOCK EFFECT STYLE */
+    /* DOCK EFFECT STYLE - CẬP NHẬT MƯỢT HƠN */
     .links { 
       display: flex; 
       flex-direction: column; 
@@ -52,12 +52,20 @@
       color: #00ffcc; text-decoration: none;
       border: 1px solid #00ffcc; padding: 12px 25px; min-width: 220px;
       border-radius: 8px; background: rgba(0, 0, 0, 0.6);
-      transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+      /* Chỉnh transition chậm lại (0.4s) để tạo cảm giác mượt */
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                  background 0.4s ease, opacity 0.4s ease, box-shadow 0.4s ease;
       transform-origin: center;
       cursor: pointer;
     }
 
-    /* 3. PROJECTS SECTION */
+    /* Màu sắc riêng cho từng Icon */
+    .links a i { margin-right: 12px; font-size: 1.3rem; }
+    .fa-youtube { color: #ff0000; }
+    .fa-discord { color: #5865F2; }
+    .fa-code { color: #ffcc00; }
+
+    /* 3. PROJECTS SECTION - CHỈNH CHỮ MÀU TRẮNG */
     .projects-section {
       min-height: 100vh; display: flex; flex-direction: column;
       align-items: center; background: black; padding: 100px 20px; box-sizing: border-box;
@@ -71,7 +79,7 @@
       display: flex; align-items: center; gap: 30px; padding: 25px;
       border-bottom: 1px solid rgba(0, 255, 204, 0.05);
       transition: all 0.4s ease; border-radius: 18px;
-      text-decoration: none; color: white;
+      text-decoration: none; color: white; /* Chữ mặc định màu trắng */
       cursor: pointer;
     }
     .project-item:hover {
@@ -85,65 +93,35 @@
       border: 1px solid rgba(0, 255, 204, 0.1);
     }
     .project-media img { width: 100%; height: 100%; object-fit: cover; }
-    .project-info { flex-grow: 1; overflow: hidden; }
-    .project-info h3 { margin: 0; font-size: 1.4rem; color: white; }
+    
+    /* Chỉnh toàn bộ chữ Project sang trắng */
+    .project-info h3 { margin: 0; font-size: 1.4rem; color: #ffffff !important; }
     .project-info .description {
-      margin: 10px 0 0; font-size: 1rem; color: #dddddd;
+      margin: 10px 0 0; font-size: 1rem; color: #ffffff !important; 
       font-family: 'Times New Roman', Times, serif;
       line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3;
       -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;
       white-space: pre-line;
+      opacity: 0.9;
     }
-    .yt-title-line { font-weight: bold; display: block; color: #00ffcc; margin-bottom: 5px; }
+    .yt-title-line { font-weight: bold; display: block; color: #ffffff !important; margin-bottom: 5px; }
 
-    /* 4. DIALOG / MODAL STYLE (CẬP NHẬT TRONG SUỐT & KHÔNG VIỀN) */
+    /* 4. MODAL STYLE */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.85); /* Tăng độ tối nền để nội dung nổi bật */
-      backdrop-filter: blur(15px); /* Làm mờ nền cực mạnh */
-      display: none; justify-content: center; align-items: center;
-      z-index: 9999;
+      background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px);
+      display: none; justify-content: center; align-items: center; z-index: 9999;
     }
     .modal-content {
-      background: transparent; /* Khung trong suốt hoàn toàn */
-      width: 90%; max-width: 800px; 
-      border: none; /* Bỏ viền */
-      position: relative; padding: 20px;
-      color: white; 
-      box-shadow: none; /* Bỏ đổ bóng khung */
+      background: transparent; width: 90%; max-width: 800px; border: none;
+      position: relative; padding: 20px; color: white;
     }
-    .modal-header-title { 
-        font-size: 1.5rem; 
-        color: #00ffcc; 
-        font-weight: bold; 
-        margin-bottom: 15px;
-        text-align: center;
-    }
-    .modal-video-container { 
-        width: 100%; 
-        aspect-ratio: 16/9; 
-        background: #000; 
-        border-radius: 15px; 
-        overflow: hidden; 
-        box-shadow: 0 0 30px rgba(0, 255, 204, 0.2); /* Đổ bóng nhẹ cho video để tạo khối */
-    }
+    .modal-header-title { font-size: 1.5rem; color: #00ffcc; font-weight: bold; margin-bottom: 15px; text-align: center; }
+    .modal-video-container { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 15px; overflow: hidden; box-shadow: 0 0 30px rgba(0, 255, 204, 0.2); }
     .modal-video-container iframe { width: 100%; height: 100%; border: none; }
-    .modal-description { 
-        font-family: 'Times New Roman', Times, serif; 
-        font-size: 1.1rem; 
-        line-height: 1.6; 
-        color: #eee; 
-        white-space: pre-line; 
-        margin-top: 20px;
-        text-align: center;
-    }
+    .modal-description { font-family: 'Times New Roman', Times, serif; font-size: 1.1rem; line-height: 1.6; color: #eee; white-space: pre-line; margin-top: 20px; text-align: center; }
     .modal-btn-container { display: flex; justify-content: center; margin-top: 30px; }
-    .modal-btn {
-      padding: 12px 35px; background: #00ffcc; color: black;
-      text-decoration: none; font-weight: bold; border-radius: 50px;
-      transition: 0.3s; box-shadow: 0 0 15px #00ffcc;
-      display: flex; align-items: center; gap: 10px;
-    }
+    .modal-btn { padding: 12px 35px; background: #00ffcc; color: black; text-decoration: none; font-weight: bold; border-radius: 50px; transition: 0.3s; box-shadow: 0 0 15px #00ffcc; display: flex; align-items: center; gap: 10px; }
     .modal-btn:hover { transform: scale(1.1); box-shadow: 0 0 25px #00ffcc; }
   </style>
 </head>
@@ -152,11 +130,8 @@
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-content" onclick="event.stopPropagation()">
     <div class="modal-header-title" id="modalProjectTitle">Project Name</div>
-    
     <div id="modalVideoSection" class="modal-video-container"></div>
-
     <div class="modal-description" id="modalDescription"></div>
-
     <div class="modal-btn-container">
       <a href="https://www.mediafire.com/file/bp6rsmdlgm1xue9/Yasuo_Nightbringer.mcaddon/file" target="_blank" class="modal-btn">
         OPEN LINK <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -194,8 +169,8 @@
 </div>
 
 <script>
-  // JS giữ nguyên như cũ để đảm bảo tính năng hoạt động
   const overlay = document.getElementById('modalOverlay');
+  
   function openModal(title, desc, youtubeLink) {
     document.getElementById('modalProjectTitle').innerText = title;
     document.getElementById('modalDescription').innerText = desc;
@@ -210,6 +185,7 @@
     overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden'; 
   }
+
   function closeModal() {
     overlay.style.display = 'none';
     document.getElementById('modalVideoSection').innerHTML = ''; 
@@ -226,31 +202,67 @@
         const data = await response.json();
         if (data.title) {
           item.querySelector('.project-media').innerHTML = `<img src="${data.thumbnail_url}" alt="Thumbnail">`;
+          // Giữ chữ Project màu trắng
           const videoDescription = "I created an addon about the champion Yasuo in League of Legends!#addons #addonmcpe #yasuo #lol #minecraft";
-          item.querySelector('.description').innerHTML = `<span class="yt-title-line">${data.title}</span>` + videoDescription;
+          item.querySelector('.description').innerHTML = `<span class="yt-title-line" style="color:white !important;">${data.title}</span>` + videoDescription;
         }
       } catch (e) { console.error(e); }
     }
   }
 
+  // JS DOCK EFFECT CẬP NHẬT MÀU SẮC ICON VÀ ĐỘ MƯỢT
   const linkContainer = document.getElementById('link-container');
   const links = Array.from(linkContainer.querySelectorAll('a'));
+  
   links.forEach((link, index) => {
     link.addEventListener('mousemove', () => {
       links.forEach((l, i) => {
         const distance = Math.abs(i - index);
         let scale = 1, opacity = 1;
-        if (distance === 0) { scale = 1.3; l.style.background = "#00ffcc"; l.style.color = "black"; l.style.boxShadow = "0 0 25px #00ffcc"; }
-        else if (distance === 1) { scale = 0.95; opacity = 0.7; l.style.background = "rgba(0, 0, 0, 0.6)"; l.style.color = "#00ffcc"; l.style.boxShadow = "none"; }
-        else { scale = 0.8; opacity = 0.4; l.style.background = "rgba(0, 0, 0, 0.6)"; l.style.color = "#00ffcc"; l.style.boxShadow = "none"; }
+        
+        if (distance === 0) { 
+          scale = 1.3; 
+          l.style.background = "#00ffcc"; 
+          l.style.color = "black"; 
+          l.style.boxShadow = "0 0 25px #00ffcc";
+          // Khi nút thành màu đen, icon cũng nên thành đen để dễ nhìn
+          l.querySelector('i').style.color = "black";
+        } 
+        else if (distance === 1) { 
+          scale = 0.92; opacity = 0.6; 
+          l.style.background = "rgba(0, 0, 0, 0.6)"; 
+          l.style.color = "#00ffcc"; 
+          l.style.boxShadow = "none";
+          resetIconColor(l);
+        } 
+        else { 
+          scale = 0.85; opacity = 0.35; 
+          l.style.background = "rgba(0, 0, 0, 0.6)"; 
+          l.style.color = "#00ffcc"; 
+          l.style.boxShadow = "none";
+          resetIconColor(l);
+        }
         l.style.transform = `scale(${scale})`;
         l.style.opacity = opacity;
       });
     });
   });
+
+  function resetIconColor(el) {
+    const icon = el.querySelector('i');
+    if(icon.classList.contains('fa-youtube')) icon.style.color = "#ff0000";
+    if(icon.classList.contains('fa-discord')) icon.style.color = "#5865F2";
+    if(icon.classList.contains('fa-code')) icon.style.color = "#ffcc00";
+  }
+
   linkContainer.addEventListener('mouseleave', () => {
     links.forEach((l) => {
-      l.style.transform = "scale(1)"; l.style.opacity = "1"; l.style.background = "rgba(0, 0, 0, 0.6)"; l.style.color = "#00ffcc"; l.style.boxShadow = "none";
+      l.style.transform = "scale(1)"; 
+      l.style.opacity = "1"; 
+      l.style.background = "rgba(0, 0, 0, 0.6)"; 
+      l.style.color = "#00ffcc"; 
+      l.style.boxShadow = "none";
+      resetIconColor(l);
     });
   });
 
