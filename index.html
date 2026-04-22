@@ -217,22 +217,42 @@ async function loadProjects() {
     const media = item.querySelector('.project-media');
     const descBox = item.querySelector('.description');
 
+    // mặc định
     media.innerHTML = `<i class="fa-solid fa-image"></i>`;
     descBox.innerText = desc || "";
 
+    // có ảnh riêng
     if (img) {
       media.innerHTML = `<img src="${img}">`;
     }
 
+    // có youtube
     if (yt) {
       try {
-        const res = await fetch(`https://noembed.com/embed?url=${yt}`);
+        let id = yt.includes('v=')
+          ? yt.split('v=')[1].split('&')[0]
+          : yt.split('/').pop();
+
+        // thumbnail
+        media.innerHTML = `<img src="https://img.youtube.com/vi/${id}/hqdefault.jpg">`;
+
+        // lấy title + description
+        const res = await fetch(`https://yt.lemnoslife.com/noKey/videos?part=snippet&id=${id}`);
         const data = await res.json();
 
-        media.innerHTML = `<img src="${data.thumbnail_url}">`;
+        const snippet = data.items[0].snippet;
 
-        descBox.innerText = data.title + "\n" + (data.author_name || "");
-      } catch {}
+        let text = snippet.title;
+
+        if (snippet.description) {
+          text += "\n" + snippet.description;
+        }
+
+        descBox.innerText = text;
+
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 }
