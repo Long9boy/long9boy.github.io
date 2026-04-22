@@ -9,7 +9,6 @@
   <link rel="icon" type="image/x-icon" href="MyIcon.ico">
 
   <style>
-    /* ... các phần CSS cũ của bạn ... */
     body {
       margin: 0;
       font-family: 'Courier New', monospace;
@@ -21,26 +20,33 @@
       height: 100vh;
     }
 
+    .container { text-align: center; }
+
+    /* Hiệu ứng gõ chữ */
     .typing {
       border-right: 2px solid #00ffcc;
       white-space: nowrap;
       overflow: hidden;
       animation: typing 3s steps(30), blink .7s infinite;
+      margin: 0 auto 10px auto; /* Căn giữa thẻ h1 */
+      width: fit-content; 
     }
 
     @keyframes typing { from { width: 0 } to { width: 100% } }
     @keyframes blink { 50% { border-color: transparent } }
 
-    .container { text-align: center; }
-
+    /* Khu vực các nút bấm */
     .links a {
-      display: block;
+      display: flex;            /* Sử dụng flex để căn giữa icon và chữ */
+      align-items: center;      /* Căn giữa theo chiều dọc */
+      justify-content: center;   /* Căn giữa theo chiều ngang */
       margin: 10px;
       color: #00ffcc;
       text-decoration: none;
       border: 1px solid #00ffcc;
-      padding: 10px;
+      padding: 10px 20px;
       transition: 0.3s;
+      min-width: 200px;         /* Cho các nút dài bằng nhau */
     }
 
     .links a:hover {
@@ -48,9 +54,21 @@
       color: black;
     }
 
-    /* CSS mới cho icon */
+    /* Icon mặc định */
     .links a i {
       margin-right: 10px;
+      font-size: 1.2rem;
+      transition: 0.3s;
+    }
+
+    /* Màu sắc riêng cho từng Icon */
+    .icon-yt { color: #FF0000; }
+    .icon-kofi { color: #FF5E5B; }
+    .icon-discord { color: #5865F2; }
+
+    /* Khi di chuột vào nút, icon sẽ chuyển sang màu đen để dễ nhìn trên nền xanh */
+    .links a:hover i {
+      color: black;
     }
   </style>
 </head>
@@ -61,9 +79,9 @@
   <p>Developer | Minecraft | Coding</p>
 
   <div class="links">
-    <a href="#"><i class="fa-brands fa-youtube"></i> YouTube</a>
-    <a href="#"><i class="fa-solid fa-mug-hot"></i> Ko-fi</a>
-    <a href="#"><i class="fa-brands fa-discord"></i> Discord</a>
+    <a href="#"><i class="fa-brands fa-youtube icon-yt"></i> YouTube</a>
+    <a href="#"><i class="fa-solid fa-mug-hot icon-kofi"></i> Ko-fi</a>
+    <a href="#"><i class="fa-brands fa-discord icon-discord"></i> Discord</a>
   </div>
 </div>
 
