@@ -1,251 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Long9boy | Portfolio</title>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-<style>
-html { scroll-behavior: smooth; }
-
-body {
-  margin: 0;
-  font-family: 'Courier New', monospace;
-  background: black;
-  color: #00ffcc;
-}
-
-/* HERO */
-.hero {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: url('Background.png') center/cover fixed;
-  text-align: center;
-  position: relative;
-}
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,.5), black);
-}
-.container { position: relative; z-index: 2; }
-
-.typing {
-  border-right: 3px solid #00ffcc;
-  white-space: nowrap;
-  overflow: hidden;
-  animation: typing 3s steps(30), blink .7s infinite;
-  font-size: 2.5rem;
-}
-@keyframes typing { from { width:0 } to { width:100% } }
-@keyframes blink { 50% { border-color: transparent } }
-
-/* PROJECTS */
-.projects-section {
-  padding: 100px 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.projects-list {
-  width: 100%;
-  max-width: 1000px;
-}
-
-.project-item {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-  margin-bottom: 15px;
-  background: #111;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.project-item:hover {
-  transform: translateY(-5px);
-  background: #1a1a1a;
-}
-
-.project-media {
-  width: 200px;
-  height: 120px;
-  background: #000;
-  border-radius: 10px;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.project-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.project-media i {
-  font-size: 2rem;
-  opacity: 0.4;
-}
-
-.project-info h3 {
-  margin: 0;
-  color: white;
-}
-
-.description {
-  margin-top: 8px;
-  color: white;
-  opacity: 0.7;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 3; /* 1 title + 2 desc */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  white-space: pre-line;
-}
-
-/* MODAL */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(10px);
-}
-
-.modal-content {
-  width: 90%;
-  max-width: 800px;
-  background: rgba(0,0,0,0.5);
-  border-radius: 20px;
-  padding: 20px;
-  color: white;
-}
-
-.modal-video-container {
-  width: 100%;
-  aspect-ratio: 16/9;
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 10px 0;
-}
-
-.modal-video-container iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-.modal-btn {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background: #00ffcc;
-  color: black;
-  border-radius: 30px;
-  cursor: pointer;
-  display: inline-block;
-}
-</style>
-</head>
-
-<body>
-
-<!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <h2 id="modalTitle"></h2>
-    <div id="modalVideo" class="modal-video-container"></div>
-    <p id="modalDesc"></p>
-    <div class="modal-btn" id="modalBtn">OPEN</div>
-  </div>
-</div>
-
-<!-- HERO -->
-<div class="hero">
-  <div class="container">
-    <h1 class="typing">Hi, I'm Long9boy</h1>
-  </div>
-</div>
-
-<!-- PROJECTS -->
-<div class="projects-section">
-  <div class="projects-list">
-
-    <!-- PROJECT 1 (YOUTUBE) -->
-    <div class="project-item"
-      data-youtube="https://youtu.be/LULR6LoIOdM"
-      data-download="https://example.com"
-      onclick="openProject(this)">
-      <div class="project-media"></div>
-      <div class="project-info">
-        <h3>New Crate [v2] 1.21.30+</h3>
-        <div class="description"></div>
-      </div>
-    </div>
-
-    <!-- PROJECT 2 (NO YOUTUBE) -->
-    <div class="project-item"
-      data-image=""
-      data-description="Đây là project không có YouTube"
-      data-download="#"
-      onclick="openProject(this)">
-      <div class="project-media"></div>
-      <div class="project-info">
-        <h3>Custom Project</h3>
-        <div class="description"></div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<script>
 async function loadProjects() {
   const items = document.querySelectorAll('.project-item');
 
   for (const item of items) {
-    const yt = item.dataset.youtube;
-    const img = item.dataset.image;
-    const desc = item.dataset.description;
+    const yt = item.getAttribute('data-youtube');
+    const img = item.getAttribute('data-image');
+    const descCustom = item.getAttribute('data-description');
 
     const media = item.querySelector('.project-media');
-    const descBox = item.querySelector('.description');
+    const descEl = item.querySelector('.description');
 
+    // DEFAULT
     media.innerHTML = `<i class="fa-solid fa-image"></i>`;
-    descBox.innerText = desc || "";
+    descEl.innerText = descCustom || "";
 
+    // Nếu có ảnh riêng
     if (img) {
       media.innerHTML = `<img src="${img}">`;
     }
 
+    // Nếu có youtube → override
     if (yt) {
       try {
-        let id = yt.includes('v=')
-          ? yt.split('v=')[1].split('&')[0]
-          : yt.split('/').pop();
-
-        // thumbnail
-        media.innerHTML = `<img src="https://img.youtube.com/vi/${id}/hqdefault.jpg">`;
-
-        // API lấy title + description
-        const res = await fetch(`https://yt.lemnoslife.com/noKey/videos?part=snippet&id=${id}`);
+        const res = await fetch(`https://noembed.com/embed?url=${yt}`);
         const data = await res.json();
-        const snippet = data.items[0].snippet;
 
-        let text = snippet.title;
+        // Thumbnail
+        media.innerHTML = `<img src="${data.thumbnail_url}">`;
 
-        if (snippet.description) {
-          text += "\n" + snippet.description;
+        // Title + Description
+        let text = data.title || "";
+
+        if (data.author_name) {
+          text += "\n" + data.author_name;
         }
 
-        descBox.innerText = text;
+        descEl.innerText = text;
 
       } catch (e) {
         console.error(e);
@@ -253,41 +42,3 @@ async function loadProjects() {
     }
   }
 }
-
-function openProject(el) {
-  const title = el.querySelector('h3').innerText;
-  const desc = el.querySelector('.description').innerText;
-  const yt = el.dataset.youtube;
-  const link = el.dataset.download;
-
-  document.getElementById('modalTitle').innerText = title;
-  document.getElementById('modalDesc').innerText = desc;
-
-  const videoBox = document.getElementById('modalVideo');
-  videoBox.innerHTML = "";
-
-  if (yt) {
-    let id = yt.includes('v=')
-      ? yt.split('v=')[1].split('&')[0]
-      : yt.split('/').pop();
-
-    videoBox.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>`;
-  }
-
-  document.getElementById('modalBtn').onclick = () => window.open(link, "_blank");
-
-  document.getElementById('modalOverlay').style.display = "flex";
-  document.body.style.overflow = "hidden";
-}
-
-document.getElementById('modalOverlay').onclick = function () {
-  this.style.display = "none";
-  document.getElementById('modalVideo').innerHTML = "";
-  document.body.style.overflow = "auto";
-};
-
-window.onload = loadProjects;
-</script>
-
-</body>
-</html>
