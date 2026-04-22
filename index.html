@@ -71,7 +71,8 @@
       display: flex; align-items: center; gap: 30px; padding: 25px;
       border-bottom: 1px solid rgba(0, 255, 204, 0.05);
       transition: all 0.4s ease; border-radius: 18px;
-      text-decoration: none; color: inherit; cursor: pointer;
+      text-decoration: none; color: white;
+      cursor: pointer;
     }
     .project-item:hover {
       background: #1a1a1a; transform: scale(1.02) translateY(-8px);
@@ -85,9 +86,9 @@
     }
     .project-media img { width: 100%; height: 100%; object-fit: cover; }
     .project-info { flex-grow: 1; overflow: hidden; }
-    .project-info h3 { margin: 0; font-size: 1.4rem; color: #00ffcc; }
+    .project-info h3 { margin: 0; font-size: 1.4rem; color: white; }
     .project-info .description {
-      margin: 10px 0 0; font-size: 1rem; color: white; 
+      margin: 10px 0 0; font-size: 1rem; color: #dddddd;
       font-family: 'Times New Roman', Times, serif;
       line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3;
       -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;
@@ -95,22 +96,47 @@
     }
     .yt-title-line { font-weight: bold; display: block; color: #00ffcc; margin-bottom: 5px; }
 
-    /* 4. DIALOG / MODAL STYLE */
+    /* 4. DIALOG / MODAL STYLE (CẬP NHẬT TRONG SUỐT & KHÔNG VIỀN) */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(12px);
+      background: rgba(0, 0, 0, 0.85); /* Tăng độ tối nền để nội dung nổi bật */
+      backdrop-filter: blur(15px); /* Làm mờ nền cực mạnh */
       display: none; justify-content: center; align-items: center;
       z-index: 9999;
     }
     .modal-content {
-      background: #111; width: 90%; max-width: 800px; border-radius: 20px;
-      border: 1px solid #00ffcc; position: relative; padding: 40px;
-      color: white; box-shadow: 0 0 50px rgba(0, 255, 204, 0.2);
+      background: transparent; /* Khung trong suốt hoàn toàn */
+      width: 90%; max-width: 800px; 
+      border: none; /* Bỏ viền */
+      position: relative; padding: 20px;
+      color: white; 
+      box-shadow: none; /* Bỏ đổ bóng khung */
     }
-    .modal-header-title { position: absolute; top: 20px; left: 20px; font-size: 1.2rem; color: #00ffcc; font-weight: bold; }
-    .modal-video-container { width: 100%; aspect-ratio: 16/9; margin: 25px 0 15px; background: #000; border-radius: 10px; overflow: hidden; border: 1px solid #222; }
+    .modal-header-title { 
+        font-size: 1.5rem; 
+        color: #00ffcc; 
+        font-weight: bold; 
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    .modal-video-container { 
+        width: 100%; 
+        aspect-ratio: 16/9; 
+        background: #000; 
+        border-radius: 15px; 
+        overflow: hidden; 
+        box-shadow: 0 0 30px rgba(0, 255, 204, 0.2); /* Đổ bóng nhẹ cho video để tạo khối */
+    }
     .modal-video-container iframe { width: 100%; height: 100%; border: none; }
-    .modal-description { font-family: 'Times New Roman', Times, serif; font-size: 1.1rem; line-height: 1.6; color: #eee; white-space: pre-line; }
+    .modal-description { 
+        font-family: 'Times New Roman', Times, serif; 
+        font-size: 1.1rem; 
+        line-height: 1.6; 
+        color: #eee; 
+        white-space: pre-line; 
+        margin-top: 20px;
+        text-align: center;
+    }
     .modal-btn-container { display: flex; justify-content: center; margin-top: 30px; }
     .modal-btn {
       padding: 12px 35px; background: #00ffcc; color: black;
@@ -126,8 +152,11 @@
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-content" onclick="event.stopPropagation()">
     <div class="modal-header-title" id="modalProjectTitle">Project Name</div>
+    
     <div id="modalVideoSection" class="modal-video-container"></div>
+
     <div class="modal-description" id="modalDescription"></div>
+
     <div class="modal-btn-container">
       <a href="https://www.mediafire.com/file/bp6rsmdlgm1xue9/Yasuo_Nightbringer.mcaddon/file" target="_blank" class="modal-btn">
         OPEN LINK <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -165,7 +194,7 @@
 </div>
 
 <script>
-  // 1. DIALOG LOGIC
+  // JS giữ nguyên như cũ để đảm bảo tính năng hoạt động
   const overlay = document.getElementById('modalOverlay');
   function openModal(title, desc, youtubeLink) {
     document.getElementById('modalProjectTitle').innerText = title;
@@ -188,7 +217,6 @@
   }
   overlay.addEventListener('click', closeModal);
 
-  // 2. YOUTUBE DATA
   async function loadYouTubeData() {
     const items = document.querySelectorAll('.yt-auto-full');
     for (const item of items) {
@@ -205,62 +233,33 @@
     }
   }
 
-  // 3. HIỆU ỨNG DOCK MẮT CÁ (FISHEYE EFFECT)
   const linkContainer = document.getElementById('link-container');
   const links = Array.from(linkContainer.querySelectorAll('a'));
-
   links.forEach((link, index) => {
     link.addEventListener('mousemove', () => {
       links.forEach((l, i) => {
         const distance = Math.abs(i - index);
-        let scale = 1;
-        let opacity = 1;
-        if (distance === 0) {
-          scale = 1.3;
-          l.style.background = "#00ffcc";
-          l.style.color = "black";
-          l.style.boxShadow = "0 0 25px #00ffcc";
-        } else if (distance === 1) {
-          scale = 0.95;
-          opacity = 0.7;
-          l.style.background = "rgba(0, 0, 0, 0.6)";
-          l.style.color = "#00ffcc";
-          l.style.boxShadow = "none";
-        } else {
-          scale = 0.8;
-          opacity = 0.4;
-          l.style.background = "rgba(0, 0, 0, 0.6)";
-          l.style.color = "#00ffcc";
-          l.style.boxShadow = "none";
-        }
+        let scale = 1, opacity = 1;
+        if (distance === 0) { scale = 1.3; l.style.background = "#00ffcc"; l.style.color = "black"; l.style.boxShadow = "0 0 25px #00ffcc"; }
+        else if (distance === 1) { scale = 0.95; opacity = 0.7; l.style.background = "rgba(0, 0, 0, 0.6)"; l.style.color = "#00ffcc"; l.style.boxShadow = "none"; }
+        else { scale = 0.8; opacity = 0.4; l.style.background = "rgba(0, 0, 0, 0.6)"; l.style.color = "#00ffcc"; l.style.boxShadow = "none"; }
         l.style.transform = `scale(${scale})`;
         l.style.opacity = opacity;
       });
     });
   });
-
   linkContainer.addEventListener('mouseleave', () => {
     links.forEach((l) => {
-      l.style.transform = "scale(1)";
-      l.style.opacity = "1";
-      l.style.background = "rgba(0, 0, 0, 0.6)";
-      l.style.color = "#00ffcc";
-      l.style.boxShadow = "none";
+      l.style.transform = "scale(1)"; l.style.opacity = "1"; l.style.background = "rgba(0, 0, 0, 0.6)"; l.style.color = "#00ffcc"; l.style.boxShadow = "none";
     });
   });
 
-  // 4. XỬ LÝ CUỘN TRANG KHÔNG ĐỔI URL
   document.querySelectorAll('.scroll-link').forEach(link => {
     link.addEventListener('click', function(e) {
-      e.preventDefault(); // Ngăn chặn nhảy hashtag lên URL
+      e.preventDefault();
       const targetId = this.getAttribute('data-target');
       const targetElement = document.getElementById(targetId);
-      
-      if (targetElement) {
-        targetElement.scrollIntoView({
-          behavior: 'smooth'
-        });
-      }
+      if (targetElement) { targetElement.scrollIntoView({ behavior: 'smooth' }); }
     });
   });
 
