@@ -52,8 +52,9 @@
       color: #00ffcc; text-decoration: none;
       border: 1px solid #00ffcc; padding: 12px 25px; min-width: 220px;
       border-radius: 8px; background: rgba(0, 0, 0, 0.6);
-      transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1); /* Chỉnh transition nhanh và mượt hơn */
+      transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
       transform-origin: center;
+      cursor: pointer;
     }
 
     /* 3. PROJECTS SECTION */
@@ -142,7 +143,7 @@
     <div class="links" id="link-container">
       <a href="https://www.youtube.com/@long9tpmcr" target="_blank"><i class="fa-brands fa-youtube"></i> YouTube</a>
       <a href="https://discord.gg/eD9726Vv" target="_blank"><i class="fa-brands fa-discord"></i> Discord</a>
-      <a href="#projects"><i class="fa-solid fa-code"></i> Recent Projects</a>
+      <a href="javascript:void(0)" class="scroll-link" data-target="projects"><i class="fa-solid fa-code"></i> Recent Projects</a>
     </div>
   </div>
 </div>
@@ -214,33 +215,30 @@
         const distance = Math.abs(i - index);
         let scale = 1;
         let opacity = 1;
-
         if (distance === 0) {
-          scale = 1.3; // Nút đang trỏ: To nhất
+          scale = 1.3;
           l.style.background = "#00ffcc";
           l.style.color = "black";
           l.style.boxShadow = "0 0 25px #00ffcc";
         } else if (distance === 1) {
-          scale = 0.95; // Nút liền kề: Hơi nhỏ
+          scale = 0.95;
           opacity = 0.7;
           l.style.background = "rgba(0, 0, 0, 0.6)";
           l.style.color = "#00ffcc";
           l.style.boxShadow = "none";
         } else {
-          scale = 0.8; // Nút ở xa: Nhỏ nhất
+          scale = 0.8;
           opacity = 0.4;
           l.style.background = "rgba(0, 0, 0, 0.6)";
           l.style.color = "#00ffcc";
           l.style.boxShadow = "none";
         }
-
         l.style.transform = `scale(${scale})`;
         l.style.opacity = opacity;
       });
     });
   });
 
-  // Khi chuột rời hẳn khỏi vùng Dock
   linkContainer.addEventListener('mouseleave', () => {
     links.forEach((l) => {
       l.style.transform = "scale(1)";
@@ -248,6 +246,21 @@
       l.style.background = "rgba(0, 0, 0, 0.6)";
       l.style.color = "#00ffcc";
       l.style.boxShadow = "none";
+    });
+  });
+
+  // 4. XỬ LÝ CUỘN TRANG KHÔNG ĐỔI URL
+  document.querySelectorAll('.scroll-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault(); // Ngăn chặn nhảy hashtag lên URL
+      const targetId = this.getAttribute('data-target');
+      const targetElement = document.getElementById(targetId);
+      
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
     });
   });
 
