@@ -18,6 +18,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      overflow: hidden;
     }
 
     .container { text-align: center; }
@@ -28,7 +29,7 @@
       white-space: nowrap;
       overflow: hidden;
       animation: typing 3s steps(30), blink .7s infinite;
-      margin: 0 auto 10px auto; /* Căn giữa thẻ h1 */
+      margin: 0 auto 10px auto;
       width: fit-content; 
     }
 
@@ -37,27 +38,29 @@
 
     /* Khu vực các nút bấm */
     .links a {
-      display: flex;            /* Sử dụng flex để căn giữa icon và chữ */
-      align-items: center;      /* Căn giữa theo chiều dọc */
-      justify-content: center;   /* Căn giữa theo chiều ngang */
-      margin: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 15px auto;
       color: #00ffcc;
       text-decoration: none;
       border: 1px solid #00ffcc;
-      padding: 10px 20px;
-      transition: 0.3s;
-      min-width: 200px;         /* Cho các nút dài bằng nhau */
+      padding: 12px 25px;
+      transition: 0.3s ease;
+      min-width: 220px;
+      border-radius: 4px; /* Bo góc nhẹ cho hiện đại */
     }
 
     .links a:hover {
       background: #00ffcc;
       color: black;
+      transform: scale(1.05); /* Phóng to nhẹ khi hover */
     }
 
     /* Icon mặc định */
     .links a i {
-      margin-right: 10px;
-      font-size: 1.2rem;
+      margin-right: 12px;
+      font-size: 1.3rem;
       transition: 0.3s;
     }
 
@@ -66,7 +69,7 @@
     .icon-kofi { color: #FF5E5B; }
     .icon-discord { color: #5865F2; }
 
-    /* Khi di chuột vào nút, icon sẽ chuyển sang màu đen để dễ nhìn trên nền xanh */
+    /* Khi di chuột vào nút, icon chuyển màu đen theo chữ */
     .links a:hover i {
       color: black;
     }
@@ -79,9 +82,17 @@
   <p>Developer | Minecraft | Coding</p>
 
   <div class="links">
-    <a href="#"><i class="fa-brands fa-youtube icon-yt"></i> YouTube</a>
-    <a href="#"><i class="fa-solid fa-mug-hot icon-kofi"></i> Ko-fi</a>
-    <a href="#"><i class="fa-brands fa-discord icon-discord"></i> Discord</a>
+    <a href="https://www.youtube.com/@long9tpmcr" target="_blank" rel="noopener noreferrer">
+      <i class="fa-brands fa-youtube icon-yt"></i> YouTube
+    </a>
+
+    <a href="#" target="_blank" rel="noopener noreferrer">
+      <i class="fa-solid fa-mug-hot icon-kofi"></i> Ko-fi
+    </a>
+
+    <a href="#" target="_blank" rel="noopener noreferrer">
+      <i class="fa-brands fa-discord icon-discord"></i> Discord
+    </a>
   </div>
 </div>
 
