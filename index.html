@@ -1,63 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head> 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Long9tpmcr</title>
-
-<link rel="icon" type="image/x-icon" href="MyIcon.ico">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Long9tpmcr</title>
   
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="MyIcon.ico">
 
-<style>
-body {
-  margin: 0;
-  font-family: 'Courier New', monospace;
-  background: black;
-  color: #00ffcc;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+  <style>
+    /* ... các phần CSS cũ của bạn ... */
+    body {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      background: black;
+      color: #00ffcc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-/* typing effect */
-.typing {
-  border-right: 2px solid #00ffcc;
-  white-space: nowrap;
-  overflow: hidden;
-  animation: typing 3s steps(30), blink .7s infinite;
-}
+    .typing {
+      border-right: 2px solid #00ffcc;
+      white-space: nowrap;
+      overflow: hidden;
+      animation: typing 3s steps(30), blink .7s infinite;
+    }
 
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
-}
+    @keyframes typing { from { width: 0 } to { width: 100% } }
+    @keyframes blink { 50% { border-color: transparent } }
 
-@keyframes blink {
-  50% { border-color: transparent }
-}
+    .container { text-align: center; }
 
-.container {
-  text-align: center;
-}
+    .links a {
+      display: block;
+      margin: 10px;
+      color: #00ffcc;
+      text-decoration: none;
+      border: 1px solid #00ffcc;
+      padding: 10px;
+      transition: 0.3s;
+    }
 
-.links a {
-  display: block;
-  margin: 10px;
-  color: #00ffcc;
-  text-decoration: none;
-  border: 1px solid #00ffcc;
-  padding: 10px;
-  transition: 0.3s;
-}
+    .links a:hover {
+      background: #00ffcc;
+      color: black;
+    }
 
-.links a:hover {
-  background: #00ffcc;
-  color: black;
-}
-</style>
+    /* CSS mới cho icon */
+    .links a i {
+      margin-right: 10px;
+    }
+  </style>
 </head>
-
 <body>
 
 <div class="container">
@@ -65,9 +61,9 @@ body {
   <p>Developer | Minecraft | Coding</p>
 
   <div class="links">
-    <a href="#">GitHub</a>
-    <a href="#">Ko-fi</a>
-    <a href="#">Discord</a>
+    <a href="#"><i class="fa-brands fa-youtube"></i> YouTube</a>
+    <a href="#"><i class="fa-solid fa-mug-hot"></i> Ko-fi</a>
+    <a href="#"><i class="fa-brands fa-discord"></i> Discord</a>
   </div>
 </div>
 
