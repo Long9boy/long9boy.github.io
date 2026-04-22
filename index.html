@@ -40,21 +40,20 @@
     @keyframes blink { 50% { border-color: transparent } }
 
     /* DOCK EFFECT STYLE */
-    .links { display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
+    .links { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 15px; 
+      margin-top: 30px; 
+      align-items: center; 
+    }
     .links a {
       display: flex; align-items: center; justify-content: center;
-      margin: 0 auto; color: #00ffcc; text-decoration: none;
+      color: #00ffcc; text-decoration: none;
       border: 1px solid #00ffcc; padding: 12px 25px; min-width: 220px;
       border-radius: 8px; background: rgba(0, 0, 0, 0.6);
-      transition: all 0.3s ease; /* Mượt mà khi co giãn */
-    }
-    /* Khi được focus (to lên) */
-    .links a.hover-large { 
-      transform: scale(1.2) !important; 
-      background: #00ffcc; 
-      color: black; 
-      box-shadow: 0 0 20px #00ffcc; 
-      opacity: 1 !important;
+      transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1); /* Chỉnh transition nhanh và mượt hơn */
+      transform-origin: center;
     }
 
     /* 3. PROJECTS SECTION */
@@ -106,7 +105,6 @@
       background: #111; width: 90%; max-width: 800px; border-radius: 20px;
       border: 1px solid #00ffcc; position: relative; padding: 40px;
       color: white; box-shadow: 0 0 50px rgba(0, 255, 204, 0.2);
-      cursor: default;
     }
     .modal-header-title { position: absolute; top: 20px; left: 20px; font-size: 1.2rem; color: #00ffcc; font-weight: bold; }
     .modal-video-container { width: 100%; aspect-ratio: 16/9; margin: 25px 0 15px; background: #000; border-radius: 10px; overflow: hidden; border: 1px solid #222; }
@@ -130,7 +128,7 @@
     <div id="modalVideoSection" class="modal-video-container"></div>
     <div class="modal-description" id="modalDescription"></div>
     <div class="modal-btn-container">
-      <a href="https://huulong.com" target="_blank" class="modal-btn" id="modalExternalLink">
+      <a href="https://huulong.com" target="_blank" class="modal-btn">
         OPEN LINK <i class="fa-solid fa-arrow-up-right-from-square"></i>
       </a>
     </div>
@@ -151,7 +149,6 @@
 
 <div id="projects" class="projects-section">
   <div class="projects-list">
-    
     <div class="project-item yt-auto-full" 
          data-youtube="https://youtu.be/kFUL31ziGOI?si=nzPEptAYnDjo2xaB"
          onclick="openModal('Yasuo Addon 1.21.15+', 'I created an addon about the champion Yasuo in League of Legends!#addons #addonmcpe #yasuo #lol #minecraft', 'https://youtu.be/kFUL31ziGOI')">
@@ -163,94 +160,94 @@
         <div class="description">Đang tải mô tả từ YouTube...</div>
       </div>
     </div>
-
   </div>
 </div>
 
 <script>
   // 1. DIALOG LOGIC
   const overlay = document.getElementById('modalOverlay');
-
   function openModal(title, desc, youtubeLink) {
-    const modalTitle = document.getElementById('modalProjectTitle');
-    const modalDesc = document.getElementById('modalDescription');
+    document.getElementById('modalProjectTitle').innerText = title;
+    document.getElementById('modalDescription').innerText = desc;
     const videoSection = document.getElementById('modalVideoSection');
-
-    modalTitle.innerText = title;
-    modalDesc.innerText = desc;
-
-    // Xử lý nhúng Video Youtube vào Dialog
     if (youtubeLink && youtubeLink.includes('youtu')) {
-      let videoId = "";
-      if (youtubeLink.includes('watch?v=')) {
-          videoId = youtubeLink.split('v=')[1].split('&')[0];
-      } else {
-          videoId = youtubeLink.split('/').pop().split('?')[0];
-      }
+      let videoId = youtubeLink.includes('watch?v=') ? youtubeLink.split('v=')[1].split('&')[0] : youtubeLink.split('/').pop().split('?')[0];
       videoSection.style.display = "block";
       videoSection.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>`;
     } else {
       videoSection.style.display = "none";
     }
-
     overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden'; 
   }
-
   function closeModal() {
     overlay.style.display = 'none';
     document.getElementById('modalVideoSection').innerHTML = ''; 
     document.body.style.overflow = 'auto';
   }
-
   overlay.addEventListener('click', closeModal);
 
-  // 2. YOUTUBE DATA AUTO-LOADER
+  // 2. YOUTUBE DATA
   async function loadYouTubeData() {
     const items = document.querySelectorAll('.yt-auto-full');
     for (const item of items) {
       const url = item.getAttribute('data-youtube');
-      const descBox = item.querySelector('.description');
-      const mediaBox = item.querySelector('.project-media');
       try {
         const response = await fetch(`https://noembed.com/embed?url=${url}`);
         const data = await response.json();
         if (data.title) {
-          mediaBox.innerHTML = `<img src="${data.thumbnail_url}" alt="Thumbnail">`;
+          item.querySelector('.project-media').innerHTML = `<img src="${data.thumbnail_url}" alt="Thumbnail">`;
           const videoDescription = "I created an addon about the champion Yasuo in League of Legends!#addons #addonmcpe #yasuo #lol #minecraft";
-          descBox.innerHTML = `<span class="yt-title-line">${data.title}</span>` + videoDescription;
+          item.querySelector('.description').innerHTML = `<span class="yt-title-line">${data.title}</span>` + videoDescription;
         }
-      } catch (e) {
-        descBox.innerText = "Lỗi tải dữ liệu.";
-      }
+      } catch (e) { console.error(e); }
     }
   }
 
-  // 3. FIX LỖI DOCK EFFECT
+  // 3. HIỆU ỨNG DOCK MẮT CÁ (FISHEYE EFFECT)
   const linkContainer = document.getElementById('link-container');
   const links = Array.from(linkContainer.querySelectorAll('a'));
 
   links.forEach((link, index) => {
-    link.addEventListener('mouseenter', () => {
+    link.addEventListener('mousemove', () => {
       links.forEach((l, i) => {
         const distance = Math.abs(i - index);
+        let scale = 1;
+        let opacity = 1;
+
         if (distance === 0) {
-          l.classList.add('hover-large');
+          scale = 1.3; // Nút đang trỏ: To nhất
+          l.style.background = "#00ffcc";
+          l.style.color = "black";
+          l.style.boxShadow = "0 0 25px #00ffcc";
+        } else if (distance === 1) {
+          scale = 0.95; // Nút liền kề: Hơi nhỏ
+          opacity = 0.7;
+          l.style.background = "rgba(0, 0, 0, 0.6)";
+          l.style.color = "#00ffcc";
+          l.style.boxShadow = "none";
         } else {
-          l.classList.remove('hover-large');
-          l.style.transform = "scale(0.85)";
-          l.style.opacity = "0.5";
+          scale = 0.8; // Nút ở xa: Nhỏ nhất
+          opacity = 0.4;
+          l.style.background = "rgba(0, 0, 0, 0.6)";
+          l.style.color = "#00ffcc";
+          l.style.boxShadow = "none";
         }
+
+        l.style.transform = `scale(${scale})`;
+        l.style.opacity = opacity;
       });
     });
   });
 
-  // Khi rời chuột ra khỏi vùng chứa toàn bộ nút
+  // Khi chuột rời hẳn khỏi vùng Dock
   linkContainer.addEventListener('mouseleave', () => {
     links.forEach((l) => {
-      l.classList.remove('hover-large');
       l.style.transform = "scale(1)";
       l.style.opacity = "1";
+      l.style.background = "rgba(0, 0, 0, 0.6)";
+      l.style.color = "#00ffcc";
+      l.style.boxShadow = "none";
     });
   });
 
