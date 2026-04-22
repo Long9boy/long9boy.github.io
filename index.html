@@ -52,53 +52,38 @@
       padding: 12px 25px;
       min-width: 220px;
       border-radius: 8px;
-      /* Animation mượt kiểu iPhone */
-      transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+      transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      position: relative;
     }
 
-    /* Khi trỏ vào danh sách: Tất cả mặc định thu nhỏ lại một chút */
-    .links:hover a {
-      transform: scale(0.9);
-      opacity: 0.5;
-    }
-
-    /* NÚT ĐANG HOVER: TO NHẤT */
-    .links a:hover {
-      transform: scale(1.2) !important;
-      opacity: 1 !important;
+    /* Khi trỏ chuột vào một nút cụ thể */
+    .links a.hover-large {
+      transform: scale(1.25);
       background: #00ffcc;
       color: black;
+      opacity: 1;
       z-index: 10;
-      box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+      box-shadow: 0 0 25px rgba(0, 255, 204, 0.5);
     }
 
-    /* NÚT KẾ TIẾP (Ngay bên dưới): Nhỏ vừa */
-    .links a:hover + a {
-      transform: scale(1) translateY(5px) !important;
-      opacity: 0.8 !important;
+    /* Nút lân cận (cách 1 bậc) */
+    .links a.hover-medium {
+      transform: scale(0.95);
+      opacity: 0.6;
     }
 
-    /* NÚT CÁCH 1 BẬC (Bên dưới nút kế tiếp): Nhỏ nhất */
-    .links a:hover + a + a {
-      transform: scale(0.85) translateY(10px) !important;
-      opacity: 0.4 !important;
+    /* Nút ở xa (cách 2 bậc) */
+    .links a.hover-small {
+      transform: scale(0.8);
+      opacity: 0.3;
     }
 
-    /* LOGIC CHO TRƯỜNG HỢP TRỎ VÀO NÚT Ở GIỮA HOẶC DƯỚI */
-    /* Nếu bạn muốn hiệu ứng này hoàn hảo cho cả nút ở giữa, 
-       CSS có hạn chế là không chọn được phần tử đứng trước. 
-       Tuy nhiên với 3 nút, cấu trúc này hoạt động cực tốt khi trỏ từ trên xuống. */
-
-    .links a i {
-      margin-right: 12px;
-      font-size: 1.3rem;
-    }
-
+    /* Trạng thái khi không hover vào khu vực link */
+    .links a i { margin-right: 12px; font-size: 1.3rem; }
     .icon-yt { color: #FF0000; }
     .icon-kofi { color: #FF5E5B; }
     .icon-discord { color: #5865F2; }
-
-    .links a:hover i { color: black; }
+    .links a.hover-large i { color: black; }
   </style>
 </head>
 <body>
@@ -107,7 +92,7 @@
   <h1 class="typing">Hi, I'm Long9tpmcr</h1>
   <p style="margin-bottom: 30px;">Developer | Minecraft | Coding</p>
 
-  <div class="links">
+  <div class="links" id="link-container">
     <a href="https://www.youtube.com/@long9tpmcr" target="_blank" rel="noopener noreferrer">
       <i class="fa-brands fa-youtube icon-yt"></i> YouTube
     </a>
@@ -121,6 +106,36 @@
     </a>
   </div>
 </div>
+
+<script>
+  const container = document.getElementById('link-container');
+  const links = Array.from(container.querySelectorAll('a'));
+
+  links.forEach((link, index) => {
+    link.addEventListener('mouseenter', () => {
+      links.forEach((l, i) => {
+        const distance = Math.abs(i - index); // Tính khoảng cách từ nút đang trỏ tới các nút khác
+        
+        l.classList.remove('hover-large', 'hover-medium', 'hover-small');
+        
+        if (distance === 0) {
+          l.classList.add('hover-large');
+        } else if (distance === 1) {
+          l.classList.add('hover-medium');
+        } else {
+          l.classList.add('hover-small');
+        }
+      });
+    });
+  });
+
+  // Reset khi rời chuột khỏi toàn bộ khu vực links
+  container.addEventListener('mouseleave', () => {
+    links.forEach(l => {
+      l.classList.remove('hover-large', 'hover-medium', 'hover-small');
+    });
+  });
+</script>
 
 </body>
 </html>
