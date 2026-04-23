@@ -464,34 +464,49 @@
             }
 
             overlay.addEventListener("click", closeModal);
+            
 
             async function loadYouTubeData() {
-                const items = document.querySelectorAll(".yt-auto-full");
+    const items = document.querySelectorAll(".yt-auto-full");
 
-                for (const item of items) {
-                    const url = item.getAttribute("data-youtube");
+    for (const item of items) {
+        const url = item.getAttribute("data-youtube");
 
-                    try {
-                        const response = await fetch(`https://noembed.com/embed?url=${url}`);
+        try {
+            // lấy video ID
+            let videoId = url.includes("watch?v=")
+                ? url.split("v=")[1].split("&")[0]
+                : url.split("/").pop().split("?")[0];
 
-                        const data = await response.json();
+            // gọi 2 API song song
+            const [embedRes, detailRes] = await Promise.all([
+                fetch(`https://noembed.com/embed?url=${url}`),
+                fetch(`https://yt.lemnoslife.com/videos?part=snippet&id=${videoId}`)
+            ]);
 
-                        if (data.title) {
-                            item.querySelector(".project-media").innerHTML =
-                                `<img src="${data.thumbnail_url}" alt="Thumbnail">`;
+            const embedData = await embedRes.json();
+            const detailData = await detailRes.json();
 
-                            const videoDescription =
-                                "I created an addon about the champion Yasuo in League of Legends!";
+            const snippet = detailData.items?.[0]?.snippet;
 
-                            item.querySelector(".description").innerHTML =
-                                `<span class="yt-title-line" style="color:white !important;">${data.title}</span>` +
-                                videoDescription;
-                        }
-                    } catch (e) {
-                        console.error(e);
-                    }
-                }
+            if (embedData.title) {
+                // thumbnail
+                item.querySelector(".project-media").innerHTML =
+                    `<img src="${embedData.thumbnail_url}" alt="Thumbnail">`;
+
+                // description thật từ YouTube
+                const videoDescription = snippet?.description || "No description";
+
+                item.querySelector(".description").innerHTML =
+                    `<span class="yt-title-line" style="color:white !important;">${embedData.title}</span>` +
+                    videoDescription;
             }
+
+        } catch (e) {
+            console.error(e);
+        }
+    }
+}
 
             // JS DOCK EFFECT - CẬP NHẬT HIỆU ỨNG DẠT RA
 
