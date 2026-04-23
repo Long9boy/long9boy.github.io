@@ -10,13 +10,10 @@
 
         <style>
             /* 1. CẤU HÌNH CHUNG */
-            html {
-                scroll-behavior: smooth;
-            }
+            html { scroll-behavior: smooth; }
 
             body {
-                margin: 0;
-                padding: 0;
+                margin: 0; padding: 0;
                 font-family: "Courier New", monospace;
                 background: black;
                 color: #00ffcc;
@@ -46,21 +43,16 @@
                 z-index: 1;
             }
 
-            .container {
-                position: relative;
-                z-index: 2;
-                width: 100%;
-            }
+            .container { position: relative; z-index: 2; width: 100%; }
 
-            /* --- CHỈNH SỬA TẠI ĐÂY ĐỂ CỐ ĐỊNH VỊ TRÍ --- */
+            /* CỐ ĐỊNH KHUNG CHỮ - CHỐNG DỊCH CHUYỂN */
             .typing-container {
-                /* Thiết lập chiều cao cố định dựa trên font-size của bạn (2.5rem ~ 60-80px) */
                 height: 4rem; 
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 margin-bottom: 10px;
-                overflow: hidden; /* Ngăn chặn việc tràn khung */
+                overflow: hidden;
             }
 
             .typing {
@@ -70,16 +62,13 @@
                 white-space: nowrap;
                 display: inline-block;
                 animation: blink 0.7s infinite;
-                /* Thêm dòng này để thẻ h1 luôn có chiều cao ngay cả khi rỗng */
                 min-height: 1em; 
                 line-height: 1;
             }
-            /* ------------------------------------------- */
 
-            @keyframes blink {
-                50% { border-color: transparent; }
-            }
+            @keyframes blink { 50% { border-color: transparent; } }
 
+            /* DOCK LINKS STYLE - ĐÃ SỬA LỖI MÀU */
             .links {
                 display: flex;
                 flex-direction: column;
@@ -99,19 +88,30 @@
                 min-width: 250px;
                 border-radius: 8px;
                 background: rgba(0, 0, 0, 0.6);
-                transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+                transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                            opacity 0.4s, 
+                            background 0.3s, 
+                            color 0.3s, 
+                            box-shadow 0.3s;
                 cursor: pointer;
             }
 
-            .links a i {
-                margin-right: 12px;
-                font-size: 1.3rem;
+            /* Hiệu ứng màu khi trỏ vào (Ưu tiên CSS) */
+            .links a:hover {
+                background: #00ffcc !important;
+                color: black !important;
+                box-shadow: 0 0 20px #00ffcc;
             }
 
+            /* Đảm bảo icon đổi màu theo chữ khi hover */
+            .links a:hover i { color: black !important; }
+
+            .links a i { margin-right: 12px; font-size: 1.3rem; transition: color 0.3s; }
             .fa-youtube { color: #ff0000; }
             .fa-discord { color: #5865f2; }
             .fa-code { color: #ffcc00; }
 
+            /* 3. PROJECTS SECTION */
             .projects-section {
                 min-height: 100vh;
                 display: flex;
@@ -148,64 +148,41 @@
             }
 
             .project-media {
-                width: 200px;
-                height: 110px;
-                flex-shrink: 0;
-                background: #000;
-                border-radius: 10px;
-                overflow: hidden;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                width: 200px; height: 110px;
+                flex-shrink: 0; background: #000;
+                border-radius: 10px; overflow: hidden;
+                display: flex; align-items: center; justify-content: center;
                 border: 1px solid rgba(0, 255, 204, 0.2);
             }
 
             .project-media img { width: 100%; height: 100%; object-fit: cover; }
-
             .project-info h3 { margin: 0; color: #00ffcc; }
-            .project-info .description {
-                font-size: 0.9rem;
-                margin-top: 8px;
-                color: #ccc;
-                font-family: serif;
-            }
+            .project-info .description { font-size: 0.9rem; margin-top: 8px; color: #ccc; font-family: serif; }
 
+            /* 4. MODAL STYLE */
             .modal-overlay {
                 position: fixed;
                 top: 0; left: 0; width: 100%; height: 100%;
                 background: rgba(0, 0, 0, 0.9);
                 backdrop-filter: blur(10px);
                 display: none;
-                justify-content: center;
-                align-items: center;
+                justify-content: center; align-items: center;
                 z-index: 9999;
             }
 
-            .modal-content {
-                width: 90%; max-width: 700px;
-                text-align: center;
-            }
-
+            .modal-content { width: 90%; max-width: 700px; text-align: center; }
             .modal-video-container {
                 width: 100%; aspect-ratio: 16/9;
                 border-radius: 15px; overflow: hidden;
                 box-shadow: 0 0 30px #00ffcc44;
             }
-
             .modal-video-container iframe { width: 100%; height: 100%; border: none; }
-
             .modal-btn {
-                display: inline-block;
-                margin-top: 25px;
-                padding: 12px 40px;
-                background: #00ffcc;
-                color: black;
-                text-decoration: none;
-                font-weight: bold;
-                border-radius: 50px;
+                display: inline-block; margin-top: 25px; padding: 12px 40px;
+                background: #00ffcc; color: black;
+                text-decoration: none; font-weight: bold; border-radius: 50px;
                 transition: 0.3s;
             }
-
             .modal-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px #00ffcc; }
         </style>
     </head>
@@ -260,6 +237,7 @@
         </div>
 
         <script>
+            // 1. TYPING EFFECT
             const textElement = document.getElementById("typing-text");
             const phrases = ["Hi, I'm Long9boy", "Welcome to my link bio"];
             let pIdx = 0, cIdx = 0, isDeleting = false;
@@ -270,7 +248,6 @@
                 cIdx = isDeleting ? cIdx - 1 : cIdx + 1;
 
                 let speed = isDeleting ? 60 : 120;
-
                 if (!isDeleting && cIdx === current.length) {
                     isDeleting = true;
                     speed = 5000; 
@@ -282,6 +259,7 @@
                 setTimeout(typeEffect, speed);
             }
 
+            // 2. MODAL LOGIC
             const overlay = document.getElementById("modalOverlay");
             function openModal(title, desc, yt, dl) {
                 document.getElementById("modalProjectTitle").innerText = title;
@@ -303,6 +281,7 @@
                 document.body.style.overflow = "auto";
             });
 
+            // 3. YOUTUBE LOAD
             async function loadYT() {
                 const items = document.querySelectorAll(".yt-auto-full");
                 for (const item of items) {
@@ -318,6 +297,7 @@
                 }
             }
 
+            // 4. DOCK EFFECT - ĐÃ FIX LỖI DÍNH MÀU
             const linkBox = document.getElementById("link-container");
             const btns = Array.from(linkBox.querySelectorAll("a"));
 
@@ -327,8 +307,7 @@
                         const dist = Math.abs(i - idx);
                         if (dist === 0) {
                             b.style.transform = "scale(1.2) translateY(0px)";
-                            b.style.background = "#00ffcc"; b.style.color = "black";
-                            b.querySelector("i").style.color = "black";
+                            b.style.opacity = "1";
                         } else {
                             const shift = i < idx ? -15 : 15;
                             b.style.transform = `scale(0.9) translateY(${shift * (2-dist)}px)`;
@@ -341,11 +320,7 @@
             linkBox.addEventListener("mouseleave", () => {
                 btns.forEach(b => {
                     b.style.transform = "scale(1) translateY(0)";
-                    b.style.opacity = "1"; b.style.background = "rgba(0,0,0,0.6)"; b.style.color = "#00ffcc";
-                    const icon = b.querySelector("i");
-                    if(icon.classList.contains("fa-youtube")) icon.style.color="#ff0000";
-                    if(icon.classList.contains("fa-discord")) icon.style.color="#5865f2";
-                    if(icon.classList.contains("fa-code")) icon.style.color="#ffcc00";
+                    b.style.opacity = "1";
                 });
             });
 
