@@ -45,7 +45,6 @@
 
             .container { position: relative; z-index: 2; width: 100%; }
 
-            /* CỐ ĐỊNH KHUNG CHỮ - CHỐNG DỊCH CHUYỂN */
             .typing-container {
                 height: 4rem; 
                 display: flex;
@@ -68,13 +67,14 @@
 
             @keyframes blink { 50% { border-color: transparent; } }
 
-            /* DOCK LINKS STYLE - ĐÃ SỬA LỖI MÀU */
+            /* DOCK LINKS STYLE */
             .links {
                 display: flex;
                 flex-direction: column;
                 gap: 15px;
                 margin-top: 30px;
                 align-items: center;
+                padding: 20px; /* Tạo vùng đệm để bắt sự kiện chuột tốt hơn */
             }
 
             .links a {
@@ -88,30 +88,26 @@
                 min-width: 250px;
                 border-radius: 8px;
                 background: rgba(0, 0, 0, 0.6);
-                transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), 
-                            opacity 0.4s, 
-                            background 0.3s, 
-                            color 0.3s, 
-                            box-shadow 0.3s;
+                /* Transition mượt mà cho mọi thay đổi */
+                transition: transform 0.3s ease-out, opacity 0.3s ease, background 0.3s, color 0.3s;
                 cursor: pointer;
+                position: relative;
             }
 
-            /* Hiệu ứng màu khi trỏ vào (Ưu tiên CSS) */
             .links a:hover {
                 background: #00ffcc !important;
                 color: black !important;
                 box-shadow: 0 0 20px #00ffcc;
             }
 
-            /* Đảm bảo icon đổi màu theo chữ khi hover */
             .links a:hover i { color: black !important; }
-
             .links a i { margin-right: 12px; font-size: 1.3rem; transition: color 0.3s; }
+            
             .fa-youtube { color: #ff0000; }
             .fa-discord { color: #5865f2; }
             .fa-code { color: #ffcc00; }
 
-            /* 3. PROJECTS SECTION */
+            /* 3. PROJECTS SECTION (Giữ nguyên) */
             .projects-section {
                 min-height: 100vh;
                 display: flex;
@@ -120,69 +116,37 @@
                 background: black;
                 padding: 100px 20px;
             }
-
             .projects-list {
-                width: 100%;
-                max-width: 1000px;
-                background: #111111;
-                border-radius: 24px;
-                padding: 15px;
-                margin-bottom: 25px;
+                width: 100%; max-width: 1000px;
+                background: #111111; border-radius: 24px;
+                padding: 15px; margin-bottom: 25px;
                 box-shadow: 0 30px 60px rgba(0, 255, 204, 0.1);
             }
-
             .project-item {
-                display: flex;
-                align-items: center;
-                gap: 25px;
-                padding: 20px;
-                transition: all 0.4s ease;
-                border-radius: 18px;
-                text-decoration: none;
-                color: white;
+                display: flex; align-items: center; gap: 25px; padding: 20px;
+                transition: all 0.4s ease; border-radius: 18px;
+                text-decoration: none; color: white;
             }
-
-            .project-item:hover {
-                background: #1a1a1a;
-                transform: scale(1.02) translateY(-5px);
-            }
-
+            .project-item:hover { background: #1a1a1a; transform: scale(1.02); }
             .project-media {
-                width: 200px; height: 110px;
-                flex-shrink: 0; background: #000;
-                border-radius: 10px; overflow: hidden;
-                display: flex; align-items: center; justify-content: center;
-                border: 1px solid rgba(0, 255, 204, 0.2);
+                width: 200px; height: 110px; flex-shrink: 0; background: #000;
+                border-radius: 10px; overflow: hidden; display: flex;
+                align-items: center; justify-content: center; border: 1px solid rgba(0, 255, 204, 0.2);
             }
-
             .project-media img { width: 100%; height: 100%; object-fit: cover; }
             .project-info h3 { margin: 0; color: #00ffcc; }
             .project-info .description { font-size: 0.9rem; margin-top: 8px; color: #ccc; font-family: serif; }
 
-            /* 4. MODAL STYLE */
+            /* 4. MODAL STYLE (Giữ nguyên) */
             .modal-overlay {
-                position: fixed;
-                top: 0; left: 0; width: 100%; height: 100%;
-                background: rgba(0, 0, 0, 0.9);
-                backdrop-filter: blur(10px);
-                display: none;
-                justify-content: center; align-items: center;
-                z-index: 9999;
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px);
+                display: none; justify-content: center; align-items: center; z-index: 9999;
             }
-
             .modal-content { width: 90%; max-width: 700px; text-align: center; }
-            .modal-video-container {
-                width: 100%; aspect-ratio: 16/9;
-                border-radius: 15px; overflow: hidden;
-                box-shadow: 0 0 30px #00ffcc44;
-            }
+            .modal-video-container { width: 100%; aspect-ratio: 16/9; border-radius: 15px; overflow: hidden; box-shadow: 0 0 30px #00ffcc44; }
             .modal-video-container iframe { width: 100%; height: 100%; border: none; }
-            .modal-btn {
-                display: inline-block; margin-top: 25px; padding: 12px 40px;
-                background: #00ffcc; color: black;
-                text-decoration: none; font-weight: bold; border-radius: 50px;
-                transition: 0.3s;
-            }
+            .modal-btn { display: inline-block; margin-top: 25px; padding: 12px 40px; background: #00ffcc; color: black; text-decoration: none; font-weight: bold; border-radius: 50px; transition: 0.3s; }
             .modal-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px #00ffcc; }
         </style>
     </head>
@@ -217,21 +181,7 @@
                 <div class="project-item yt-auto-full" data-youtube="https://youtu.be/kFUL31ziGOI" 
                      onclick="openModal('Yasuo Addon 1.21.15+', 'Review Yasuo Nightbringer addon.', 'https://youtu.be/kFUL31ziGOI', 'https://www.mediafire.com/file/bp6rsmdlgm1xue9/Yasuo_Nightbringer.mcaddon/file')">
                     <div class="project-media"><i class="fa-solid fa-circle-notch fa-spin"></i></div>
-                    <div class="project-info">
-                        <h3>Yasuo Addon 1.21.15+</h3>
-                        <div class="description">Đang tải...</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="projects-list">
-                <div class="project-item yt-auto-full" data-youtube="https://youtu.be/LULR6LoIOdM" 
-                     onclick="openModal('New Crate [v2]', 'Cập nhật hệ thống Crate mới nhất.', 'https://youtu.be/LULR6LoIOdM', '#')">
-                    <div class="project-media"><i class="fa-solid fa-circle-notch fa-spin"></i></div>
-                    <div class="project-info">
-                        <h3>New Crate [v2] 1.21.30+</h3>
-                        <div class="description">Đang tải...</div>
-                    </div>
+                    <div class="project-info"><h3>Yasuo Addon 1.21.15+</h3><div class="description">Đang tải...</div></div>
                 </div>
             </div>
         </div>
@@ -245,21 +195,61 @@
             function typeEffect() {
                 const current = phrases[pIdx];
                 textElement.textContent = isDeleting ? current.substring(0, cIdx - 1) : current.substring(0, cIdx + 1);
-                cIdx = isDeleting ? cIdx - 1 : cIdx + 1;
-
+                cIdx = isDeleting ? (cIdx - 1) : (cIdx + 1);
                 let speed = isDeleting ? 60 : 120;
-                if (!isDeleting && cIdx === current.length) {
-                    isDeleting = true;
-                    speed = 5000; 
-                } else if (isDeleting && cIdx === 0) {
-                    isDeleting = false;
-                    pIdx = (pIdx + 1) % phrases.length;
-                    speed = 500;
-                }
+                if (!isDeleting && cIdx === current.length) { isDeleting = true; speed = 5000; }
+                else if (isDeleting && cIdx === 0) { isDeleting = false; pIdx = (pIdx + 1) % phrases.length; speed = 500; }
                 setTimeout(typeEffect, speed);
             }
 
-            // 2. MODAL LOGIC
+            // 2. DOCK EFFECT - BẢN FIX TRIỆT ĐỂ
+            const linkBox = document.getElementById("link-container");
+            const btns = Array.from(linkBox.querySelectorAll("a"));
+
+            function resetButtons() {
+                btns.forEach(b => {
+                    b.style.transform = "scale(1) translateY(0)";
+                    b.style.opacity = "1";
+                });
+            }
+
+            btns.forEach((btn, idx) => {
+                btn.addEventListener("mousemove", (e) => {
+                    // Ngăn sự kiện nổi bọt để tránh xung đột với thẻ cha
+                    e.stopPropagation(); 
+                    
+                    btns.forEach((b, i) => {
+                        const dist = Math.abs(i - idx);
+                        let scale = 1;
+                        let translateY = 0;
+
+                        if (dist === 0) {
+                            scale = 1.25; // To nhất
+                            translateY = 0;
+                        } else if (dist === 1) {
+                            scale = 1.1;  // Nhỏ vừa
+                            translateY = i < idx ? -5 : 5; // Dịch nhẹ tạo cảm giác uốn cong
+                        } else {
+                            scale = 0.9;  // Nhỏ nhất (các nút ở xa)
+                            translateY = i < idx ? -10 : 10;
+                        }
+
+                        b.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+                        b.style.opacity = dist === 0 ? "1" : "0.7";
+                    });
+                });
+            });
+
+            // Khi chuột rời khỏi từng nút HOẶC nằm vào khe hở của link-container
+            linkBox.addEventListener("mousemove", (e) => {
+                if (e.target === linkBox) {
+                    resetButtons();
+                }
+            });
+
+            linkBox.addEventListener("mouseleave", resetButtons);
+
+            // 3. CÁC LOGIC KHÁC (Giữ nguyên)
             const overlay = document.getElementById("modalOverlay");
             function openModal(title, desc, yt, dl) {
                 document.getElementById("modalProjectTitle").innerText = title;
@@ -274,14 +264,12 @@
                 overlay.style.display = "flex";
                 document.body.style.overflow = "hidden";
             }
-
             overlay.addEventListener("click", () => {
                 overlay.style.display = "none";
                 document.getElementById("modalVideoSection").innerHTML = "";
                 document.body.style.overflow = "auto";
             });
 
-            // 3. YOUTUBE LOAD
             async function loadYT() {
                 const items = document.querySelectorAll(".yt-auto-full");
                 for (const item of items) {
@@ -296,33 +284,6 @@
                     } catch (e) { console.error("YT Load Error"); }
                 }
             }
-
-            // 4. DOCK EFFECT - ĐÃ FIX LỖI DÍNH MÀU
-            const linkBox = document.getElementById("link-container");
-            const btns = Array.from(linkBox.querySelectorAll("a"));
-
-            btns.forEach((btn, idx) => {
-                btn.addEventListener("mousemove", () => {
-                    btns.forEach((b, i) => {
-                        const dist = Math.abs(i - idx);
-                        if (dist === 0) {
-                            b.style.transform = "scale(1.2) translateY(0px)";
-                            b.style.opacity = "1";
-                        } else {
-                            const shift = i < idx ? -15 : 15;
-                            b.style.transform = `scale(0.9) translateY(${shift * (2-dist)}px)`;
-                            b.style.opacity = "0.5";
-                        }
-                    });
-                });
-            });
-
-            linkBox.addEventListener("mouseleave", () => {
-                btns.forEach(b => {
-                    b.style.transform = "scale(1) translateY(0)";
-                    b.style.opacity = "1";
-                });
-            });
 
             document.querySelectorAll(".scroll-link").forEach(l => {
                 l.addEventListener("click", function() {
