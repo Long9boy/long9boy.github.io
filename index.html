@@ -138,7 +138,17 @@
             }
 
             .project-media img { width: 100%; height: 100%; object-fit: cover; }
-            .project-info h3 { margin: 0; font-size: 1.4rem; color: #ffffff !important; }
+            
+            .project-info h3 { margin: 0; font-size: 1.4rem; color: #00ffcc !important; }
+            
+            /* Class mới cho tên video từ YouTube */
+            .yt-video-name { 
+                margin-top: 8px;
+                font-size: 0.95rem; 
+                color: #ffffff; 
+                opacity: 0.8;
+                font-style: italic;
+            }
 
             /* 4. MODAL STYLE */
             .modal-overlay {
@@ -227,7 +237,8 @@
                         <i class="fa-solid fa-circle-notch fa-spin" style="color: #00ffcc"></i>
                     </div>
                     <div class="project-info">
-                        <h3>Loading...</h3>
+                        <h3>Yasuo Addon 1.21.15+</h3>
+                        <div class="yt-video-name">Loading video title...</div>
                     </div>
                 </div>
             </div>
@@ -240,7 +251,8 @@
                         <i class="fa-solid fa-circle-notch fa-spin" style="color: #00ffcc"></i>
                     </div>
                     <div class="project-info">
-                        <h3>Loading...</h3>
+                        <h3>New Crate [v2] 1.21.30+</h3>
+                        <div class="yt-video-name">Loading video title...</div>
                     </div>
                 </div>
             </div>
@@ -287,10 +299,12 @@
                         const data = await response.json();
                         if (data.title) {
                             item.querySelector(".project-media").innerHTML = `<img src="${data.thumbnail_url}" alt="Thumbnail">`;
-                            item.querySelector("h3").innerText = data.title;
+                            // Ghi tên video vào div riêng, không ghi đè vào h3
+                            item.querySelector(".yt-video-name").innerText = "Video: " + data.title;
                         }
                     } catch (e) {
                         console.error("Error loading YT data", e);
+                        item.querySelector(".yt-video-name").innerText = "";
                     }
                 }
             }
@@ -314,7 +328,7 @@
                         } else {
                             scale = 0.9 - (distance * 0.05);
                             opacity = 0.6 / distance;
-                            translateY = i < index ? -10 * (links.length - distance) : 10 * (links.length - distance);
+                            translateY = i < index ? -15 * (links.length - distance) : 15 * (links.length - distance);
                             l.style.background = "rgba(0, 0, 0, 0.6)";
                             l.style.color = "#00ffcc";
                             resetIconColor(l);
